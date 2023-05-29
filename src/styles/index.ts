@@ -24,14 +24,20 @@ export const {
   },
   theme: {
     colors: {
-      PRIMARY: '#E60A6E',
-      GREY_BACKGROUND: '#151515',
-      GREY_DARK: '#202020',
-      GREY_LIGHT: '#3e3e3e',
-      WHITE: '#FFF',
-      WHITE_DARK: '#f2f2f2',
-      WARNING: '#CD0000',
-      LIGHT_PINK: '#FAA5C8',
+      DARK_100: '#adb5bd',
+      DARK_300: '#6c757d',
+      DARK_500: '#495057',
+      DARK_700: '#343a40',
+      DARK_900: '#212529',
+
+      PRIMARY_500: '#F7F7FF',
+      PRIMARY_600: '#e4e4e4',
+
+      SECONDARY_100: '#D8F3EE',
+      SECONDARY_300: '#8ADBCB',
+      SECONDARY_500: '#3BC4A9',
+      SECONDARY_700: '#247565',
+      SECONDARY_900: '#0C2722',
     },
     fontSizes,
     fontWeights,
