@@ -2,7 +2,6 @@ import { styled } from 'styles'
 
 export const Button = styled('button', {
   width: '100%',
-  maxWidth: '474px',
   height: '43px',
 
   backgroundColor: '$SECONDARY_700',
