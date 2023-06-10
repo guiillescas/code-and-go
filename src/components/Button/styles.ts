@@ -1,42 +1,42 @@
-import { styled } from 'styles'
+import styled, { css } from 'styled-components'
 
-export const Button = styled('button', {
-  width: '100%',
-  height: '43px',
+import { ButtonContainerProps } from './types'
 
-  backgroundColor: '$SECONDARY_700',
-  color: '$PRIMARY_500',
+export const ButtonContainer = styled.button<ButtonContainerProps>`
+  width: 100%;
+  height: 43px;
 
-  border: 'none',
-  borderRadius: '4px',
+  background-color: ${({ theme }) => theme.colors.neutral[700]};
+  color: ${({ theme }) => theme.colors.white[500]};
 
-  fontSize: '16px',
-  lineHeight: '20px',
+  border: none;
+  border-radius: 4px;
 
-  cursor: 'pointer',
+  font-size: 16px;
+  line-height: 20px;
 
-  transition: 'opacity 0.2s',
+  cursor: pointer;
 
-  variants: {
-    isLoading: {
-      true: {
-        opacity: 0.7,
-        cursor: 'not-allowed',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      false: {
-        opacity: 1,
-      },
-    },
-  },
+  transition: opacity 0.2s;
 
-  '&:hover:not(:disabled)': {
-    opacity: 0.8,
-  },
+  opacity: ${({ isLoading }) => (isLoading ? 0.8 : 1)};
 
-  '@bp3': {
-    fontSize: '12px',
-  },
-})
+  ${({ isLoading }) => {
+    if (isLoading) {
+      return css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: not-allowed;
+      `
+    }
+  }}
+
+  &:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 12px;
+  }
+`

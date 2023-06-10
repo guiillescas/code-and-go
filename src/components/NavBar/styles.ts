@@ -1,73 +1,73 @@
-import { styled } from 'styles'
+import styled from 'styled-components'
 
-export const NavBarContainer = styled('div', {
-  background: '$DARK_700',
-  width: '100%',
+export const NavBarContainer = styled.div`
+  background: ${({ theme }) => theme.colors.neutral[700]};
+  width: 100%;
 
-  '.content': {
-    width: '100%',
-    maxWidth: '1024px',
-    margin: '0 auto',
+  > .content {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
 
-    padding: '1rem',
+    padding: 1rem;
 
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    '.left-side-wrapper': {
-      display: 'flex',
-      aligmItems: 'center',
-      justifyContent: 'flex-start',
+    .left-side-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
 
-      '> p': {
-        fontSize: '1.5rem',
-        cursur: '',
-      },
+      > p {
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
 
-      '.burger-icon-wrapper': {
-        marginLeft: '1rem',
-      },
+      .burger-icon-wrapper {
+        margin-left: 1rem;
+      }
 
-      '> nav': {
-        marginLeft: '2rem',
+      > nav {
+        margin-left: 2rem;
 
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        gap: '$3',
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
 
-        '> a': {
-          textDecoration: 'none',
-          color: '$PRIMARY_500',
+        > a {
+          text-decoration: none;
+          color: ${({ theme }) => theme.colors.white[500]};
 
-          '&:hover': {
-            color: '$PRIMARY_600',
-          },
-        },
-      },
-    },
+          &:hover {
+            color: ${({ theme }) => theme.colors.white[600]};
+          }
+        }
+      }
+    }
 
-    '.right-side-wrapper': {
-      '.profile-picture': {
-        position: 'relative',
-        borderRadius: '50%',
+    .right-side-wrapper {
+      .profile-picture {
+        position: relative;
+        border-radius: 50%;
 
-        display: 'flex',
-        flexDirection: 'center',
-        alignItems: 'center',
+        display: flex;
+        flex-direction: center;
+        align-items: center;
 
-        cursor: 'pointer',
+        cursor: pointer;
 
-        '&:hover': {
-          opacity: 0.8,
-        },
+        &:hover {
+          opacity: 0.8;
+        }
 
-        '> img': {
-          borderRadius: '50%',
-          border: '2px solid $PRIMARY_500',
-        },
-      },
-    },
-  },
-})
+        > img {
+          border-radius: 50%;
+          border: 2px solid ${({ theme }) => theme.colors.white[500]};
+        }
+      }
+    }
+  }
+`

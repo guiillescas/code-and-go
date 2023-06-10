@@ -9,7 +9,7 @@ const IBMSansPlex = IBMPlexSans({ subsets: ['latin'], weight: '500' })
 
 export default function Button(props: ButtonProps) {
   return (
-    <Style.Button
+    <Style.ButtonContainer
       className={IBMSansPlex.className}
       disabled={props.isLoading}
       isLoading={props.isLoading}
@@ -22,6 +22,6 @@ export default function Button(props: ButtonProps) {
       ) : (
         props.children
       )}
-    </Style.Button>
+    </Style.ButtonContainer>
   )
 }

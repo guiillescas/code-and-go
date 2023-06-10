@@ -1,37 +1,37 @@
-import { styled } from 'styles'
+import styled from 'styled-components'
 
-export const CourseCardContainer = styled('div', {
-  '.image-wrapper': {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    minHeight: '200px',
-    maxHeight: '230px',
+export const CourseCardContainer = styled.div`
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    max-height: 230px;
 
-    '> img': {
-      width: '100%',
-      height: '100%',
-      minHeight: '200px',
-      maxHeight: '230px',
+    > img {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      max-height: 230px;
 
-      objectFit: 'cover',
+      object-fit: cover;
 
-      borderRadius: '8px 8px 0 0',
-    },
-  },
+      border-radius: 8px 8px 0 0;
+    }
+  }
 
-  '.content': {
-    display: 'flex',
-    flexDirection: 'column',
+  .content {
+    display: flex;
+    flex-direction: column;
 
-    marginTop: '1rem',
+    margin-top: 1rem;
 
-    '> p': {
-      marginTop: '0.75rem',
-    },
+    > p {
+      margin-top: 0.75rem;
+    }
 
-    '> button': {
-      marginTop: '0.75rem',
-    },
-  },
-})
+    > button {
+      margin-top: 0.75rem;
+    }
+  }
+`

@@ -1,15 +1,13 @@
-'use client'
-
-import { Boogaloo } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ReactElement, useState } from 'react'
 
+import { Boogaloo } from '@next/font/google'
 import { FiMenu } from 'react-icons/fi'
 
 import * as Styles from './styles'
 
-const boogaloo = Boogaloo({ subsets: ['latin'], weight: '400' })
+const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
 
 export default function NavBar(): ReactElement {
   const [isMenuBarVisible, setIsMenuBarVisible] = useState(false)
@@ -22,7 +20,7 @@ export default function NavBar(): ReactElement {
     <Styles.NavBarContainer>
       <div className="content">
         <div className="left-side-wrapper">
-          <p className={boogaloo.className}>Code&go</p>
+          <p className={Font.className}>Code&go</p>
 
           {isMenuBarVisible && (
             <div className="burger-icon-wrapper">
