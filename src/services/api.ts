@@ -13,8 +13,8 @@ export function setupAPIClient(ctx = undefined): AxiosInstance {
   const api = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
     headers: {
-      Authorization: `Bearer ${token}`,
-      'Access-Control-Allow-Origin': '*',
+      // Authorization: `Bearer ${token}`,
+      // 'Access-Control-Allow-Origin': '*',
     },
   })
 
