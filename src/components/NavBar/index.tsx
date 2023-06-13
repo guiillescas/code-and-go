@@ -20,7 +20,7 @@ export default function NavBar(): ReactElement {
     <Styles.NavBarContainer>
       <div className="content">
         <div className="left-side-wrapper">
-          <p className={Font.className}>Code&go</p>
+          <Link className={Font.className} href="/">Code&go</Link>
 
           {isMenuBarVisible && (
             <div className="burger-icon-wrapper">

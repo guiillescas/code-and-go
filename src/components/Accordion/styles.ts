@@ -21,12 +21,17 @@ export const AccordionContainer = styled.div<AccordionContainerProps>`
     padding: 1rem;
 
     background: ${({ theme }) => theme.colors.neutral[700]};
-
+    
     box-shadow: 0 20px 100px -20px #000;
-
+    
     &:hover {
-      background: $DARK_500;
       cursor: pointer;
+
+      background: $DARK_500;
+
+      background: ${({ theme }) => theme.colors.neutral[500]};
+
+      transition: background-color 0.2s;
     }
   }
 

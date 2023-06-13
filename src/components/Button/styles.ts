@@ -1,12 +1,11 @@
 import styled, { css } from 'styled-components'
 
-import { ButtonContainerProps } from './types'
+import { ButtonContainerProps, ButtonVariantsEnum } from './types'
 
 export const ButtonContainer = styled.button<ButtonContainerProps>`
   width: 100%;
   height: 43px;
 
-  background-color: ${({ theme }) => theme.colors.neutral[700]};
   color: ${({ theme }) => theme.colors.white[500]};
 
   border: none;
@@ -20,6 +19,20 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   transition: opacity 0.2s;
 
   opacity: ${({ isLoading }) => (isLoading ? 0.8 : 1)};
+
+  ${({ variant }) => {
+    switch (variant) {
+      case ButtonVariantsEnum.DEFAULT:
+        return css`
+          background: ${({ theme }) => theme.colors.neutral[700]};
+        `
+
+      case ButtonVariantsEnum.PRIMARY:
+        return css`
+          background: ${({ theme }) => theme.colors.green[700]};
+        `
+    }
+  }}
 
   ${({ isLoading }) => {
     if (isLoading) {

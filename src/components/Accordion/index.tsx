@@ -14,8 +14,8 @@ export default function Accordion(props: AccordionProps): ReactElement {
   }
 
   return (
-    <Styles.AccordionContainer isOpen={isOpen} onClick={toggleAccordian}>
-      <div className="header" role="button">
+    <Styles.AccordionContainer isOpen={isOpen} >
+      <div className="header" role="button" onClick={toggleAccordian}>
         <h2>{props.title}</h2>
 
         <FiChevronDown />

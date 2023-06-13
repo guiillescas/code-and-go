@@ -1,5 +1,6 @@
 export interface ModuleCardProps {
-  id: number
+  courseId: string
+  id: string
   imageUrl: string
   title: string
   description: string

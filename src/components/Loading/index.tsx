@@ -2,7 +2,7 @@ import * as Styles from './styles'
 
 import { LoadingProps } from './types'
 
-export function Loading(props: LoadingProps) {
+function Loading(props: LoadingProps) {
   return (
     <Styles.Container
       width={props.width}
@@ -18,3 +18,5 @@ export function Loading(props: LoadingProps) {
     </Styles.Container>
   )
 }
+
+export default Loading

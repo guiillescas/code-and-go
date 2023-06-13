@@ -9,7 +9,7 @@ export const NavBarContainer = styled.div`
     max-width: 1024px;
     margin: 0 auto;
 
-    padding: 1rem;
+    padding: 1rem 0;
 
     display: flex;
     align-items: center;
@@ -20,9 +20,11 @@ export const NavBarContainer = styled.div`
       align-items: center;
       justify-content: flex-start;
 
-      > p {
+      > a {
         font-size: 1.5rem;
         cursor: pointer;
+        text-decoration: none;
+        color: ${({ theme }) => theme.colors.white[500]};
       }
 
       .burger-icon-wrapper {
