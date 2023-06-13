@@ -18,6 +18,21 @@ export const ModuleContainer = styled.main`
       align-items: flex-start;
       justify-content: flex-start;
       gap: 1rem;
+
+      .ecercise-wrapper {
+        > p {
+          margin-bottom: 1rem;
+          font-weight: bold;
+        }
+      }
+
+      .footer {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
     }
   }
 `

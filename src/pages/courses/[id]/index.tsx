@@ -1,6 +1,5 @@
-import { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
-import Breadcrumb from '@/components/Breadcrumb'
 import ModuleCard from '@/components/ModuleCard'
 
 import { api } from 'services/api'
@@ -8,44 +7,23 @@ import { api } from 'services/api'
 import * as Styles from './styles'
 
 import { CourseProps } from './types'
-
-const menus = [
-  {
-    id: 1,
-    title: 'Teste 1',
-    link: '/courses/teste',
-  },
-  {
-    id: 2,
-    title: 'Teste 1',
-    link: '/teste',
-  },
-]
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
+import module from 'next/dist/server/future/route-modules/app-route/module'
 
 const modules = [
   {
-    id: 1,
-    title: 'Modulo 1',
+    id: '469a43d8-cb47-4d5e-9521-5f215ad86053',
+    title: 'Declaração de Variavéis',
     imageUrl: '/courses/teste',
-  },
-  {
-    id: 2,
-    title: 'Modulo 1',
-    imageUrl: '/teste',
-  },
+  }
 ]
 
-export default function Course(props: CourseProps): ReactElement {
-  useEffect(() => {
-    api.get(`/course${props.id}`)
-  }, [props.id])
-
+export default function Course(): ReactElement {
   return (
     <Styles.CourseContainer>
       <section>
-        <Breadcrumb menus={menus} />
-
-        <h1>Curso de JavaScript</h1>
+        <h1>Curso de Javascript</h1>
 
         <div className="content">
           <h2>Módulos</h2>
@@ -53,6 +31,7 @@ export default function Course(props: CourseProps): ReactElement {
           {modules.map((module) => (
             <ModuleCard
               key={module.id}
+              courseId={"337c376e-ce44-4899-9c14-044052540082"}
               id={module.id}
               title={module.title}
               imageUrl={module.imageUrl}

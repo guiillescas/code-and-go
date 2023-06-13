@@ -1,18 +1,34 @@
 {
-  "extends": ["next/core-web-vitals", "@rocketseat/eslint-config/react"],
-  "plugins": ["eslint-plugin-import-helpers"],
+  "extends": [
+    "next/core-web-vitals",
+    "@rocketseat/eslint-config/react"
+  ],
+  "plugins": [
+    "eslint-plugin-import-helpers"
+  ],
   "rules": {
     "import-helpers/order-imports": [
       "warn",
       {
         "newlinesBetween": "always",
         "groups": [
-          ["/^react//", "/^react$/", "/^next//"],
-          ["module", "/^styled-components/", "/(@)/"],
+          [
+            "/^react//",
+            "/^react$/",
+            "/^next//"
+          ],
+          [
+            "module",
+            "/^styled-components/",
+            "/(@)/"
+          ],
           "/(app)/",
           "/(components)/",
           "/(constants)/",
-          ["/(contexts)/", "/(hooks)/"],
+          [
+            "/(contexts)/",
+            "/(hooks)/"
+          ],
           "/(services)/",
           "/(lib)/",
           "/(data)/",
@@ -21,8 +37,11 @@
           "/(assets)/",
           "/(public)/"
         ],
-        "alphabetize": { "order": "asc", "ignoreCase": true }
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
       }
-    ]
+    ],
   }
 }

@@ -6,17 +6,11 @@ import * as Styles from './styles'
 
 const courses = [
   {
-    id: 'abc123',
-    title: 'TypeScript Básico',
-    description: 'Curso básico para aprender conceitos do typescript',
-    imageUrl: '/me.jpeg',
-  },
-  {
-    id: 'abc1234',
-    title: 'TypeScript intermediário',
-    description: 'Curso intermediário para aprender conceitos do typescript',
-    imageUrl: '/me.jpeg',
-  },
+    id: '337c376e-ce44-4899-9c14-044052540082',
+    title: 'JavaScript',
+    description: 'The Code&Go base Javascript Course',
+    imageUrl: '/ts.png',
+  }
 ]
 
 export default function Courses(): ReactElement {

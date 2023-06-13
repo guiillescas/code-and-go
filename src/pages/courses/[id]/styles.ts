@@ -9,13 +9,14 @@ export const CourseContainer = styled.main`
   max-width: 1024px;
   margin: 0 auto;
 
-  margin-top: 4rem;
+  margin-top: 1rem;
 
   > section {
     width: 100%;
 
     h1 {
-      margin-top: 1.5rem;
+      margin: 1.5rem 0 2rem;
+      font-size: 2rem;
     }
 
     > .content {
@@ -28,6 +29,10 @@ export const CourseContainer = styled.main`
       width: 100%;
 
       margin-top: 1rem;
+
+      > h2 {
+        font-size: 1.5rem;
+      }
     }
   }
 `

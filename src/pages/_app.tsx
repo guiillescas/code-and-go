@@ -16,6 +16,9 @@ import { theme } from 'styles/themes/default'
 
 import Loading from './loading'
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 Modal.setAppElement('#__next')
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -45,6 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Code&go</title>
       </Head>
       <GlobalStyles theme={theme} />
+      <ToastContainer theme='dark' />
 
       <LayoutGroup>
         <Styles.AppContainer className={primary.className}>

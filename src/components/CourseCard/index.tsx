@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { ReactElement } from 'react'
 
 import Button from 'components/Button'
@@ -8,6 +9,12 @@ import * as Styles from './styles'
 import { CourseCardProps } from './types'
 
 export default function CourseCard(props: CourseCardProps): ReactElement {
+  const router = useRouter()
+
+  function handleClickCourseCard() {
+    router.push(`/courses/${props.id}`)
+  }
+
   return (
     <Styles.CourseCardContainer>
       <div className="image-wrapper">
@@ -22,7 +29,7 @@ export default function CourseCard(props: CourseCardProps): ReactElement {
         <h2>{props.title}</h2>
         <p>{props.description}</p>
 
-        <Button>Acessar curso</Button>
+        <Button onClick={handleClickCourseCard}>Acessar curso</Button>
       </div>
     </Styles.CourseCardContainer>
   )

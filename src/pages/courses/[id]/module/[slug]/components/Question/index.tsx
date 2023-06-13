@@ -13,12 +13,12 @@ export default function Question(props: QuestionProps): ReactElement {
         <div className="option" key={alternative.value}>
           <input
             type="radio"
-            name="option"
-            id={alternative.value}
+            name={props.title}
+            id={alternative.name}
             value={alternative.value}
             className="radio"
           />
-          <label htmlFor={alternative.value}>{alternative.name}</label>
+          <label htmlFor={alternative.name}>{alternative.name}</label>
         </div>
       ))}
     </Styles.QuestionContainer>

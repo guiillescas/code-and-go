@@ -17,5 +17,15 @@ export const QuestionContainer = styled.div`
     gap: 0.25rem;
 
     margin: 0.25rem 0;
+
+    > label {
+      cursor: pointer;
+
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 `
