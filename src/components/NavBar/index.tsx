@@ -5,6 +5,8 @@ import { ReactElement, useState } from 'react'
 import { Boogaloo } from '@next/font/google'
 import { FiMenu } from 'react-icons/fi'
 
+import DayCounter from './components/DayCounter'
+
 import * as Styles from './styles'
 
 const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
@@ -20,7 +22,9 @@ export default function NavBar(): ReactElement {
     <Styles.NavBarContainer>
       <div className="content">
         <div className="left-side-wrapper">
-          <Link className={Font.className} href="/">Code&go</Link>
+          <Link className={Font.className} href="/">
+            Code&go
+          </Link>
 
           {isMenuBarVisible && (
             <div className="burger-icon-wrapper">
@@ -37,7 +41,9 @@ export default function NavBar(): ReactElement {
         </div>
 
         <div className="right-side-wrapper">
-          <button className="profile-picture" type="button" title="Meu perfil">
+          <DayCounter couter={3} />
+
+          <button className="profile-picture" type="button">
             {/* TODO - Colocar nome da pessoa */}
             <Image src="/me.jpeg" alt={`Imagem de `} width={40} height={40} />
           </button>
