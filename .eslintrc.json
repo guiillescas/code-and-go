@@ -1,15 +1,28 @@
 {
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
   "extends": [
     "next/core-web-vitals",
     "@rocketseat/eslint-config/react"
   ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
   "plugins": [
+    "@typescript-eslint",
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "endOfLine": "off",
     "import-helpers/order-imports": [
       "warn",
       {
+        // example configuration
         "newlinesBetween": "always",
         "groups": [
           [
@@ -43,5 +56,6 @@
         }
       }
     ],
+    "no-unused-vars": "warn"
   }
 }

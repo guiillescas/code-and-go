@@ -51,8 +51,14 @@ export const NavBarContainer = styled.div`
     }
 
     .right-side-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
       .profile-picture {
         position: relative;
+
         border-radius: 50%;
 
         display: flex;
