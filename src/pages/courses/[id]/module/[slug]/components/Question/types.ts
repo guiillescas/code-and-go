@@ -1,9 +1,7 @@
-interface AlternativesProps {
-  name: string
-  value: string
-}
+import { AlternativeProps } from "../../types"
 
 export interface QuestionProps {
   title: string
-  alternatives: AlternativesProps[]
+  alternatives: AlternativeProps[]
+  setAlternativeId: any
 }

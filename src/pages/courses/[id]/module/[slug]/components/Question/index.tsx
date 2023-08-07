@@ -10,15 +10,15 @@ export default function Question(props: QuestionProps): ReactElement {
       <p>{props.title}</p>
 
       {props.alternatives.map((alternative) => (
-        <div className="option" key={alternative.value}>
+        <div className="option" key={alternative.id} onClick={() => props.setAlternativeId(alternative.id)}>
           <input
             type="radio"
             name={props.title}
-            id={alternative.name}
-            value={alternative.value}
+            id={alternative.description}
+            value={alternative.id}
             className="radio"
           />
-          <label htmlFor={alternative.name}>{alternative.name}</label>
+          <label htmlFor={alternative.description}>{alternative.description}</label>
         </div>
       ))}
     </Styles.QuestionContainer>

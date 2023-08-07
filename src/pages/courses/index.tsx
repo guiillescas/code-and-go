@@ -9,8 +9,14 @@ const courses = [
     id: '337c376e-ce44-4899-9c14-044052540082',
     title: 'JavaScript',
     description: 'The Code&Go base Javascript Course',
+    imageUrl: '/js.jpeg',
+  },
+  {
+    id: '337c376e-ce44-4899-9c14-04405254008',
+    title: 'Typescript',
+    description: 'The Code&Go base Typescript Course',
     imageUrl: '/ts.png',
-  }
+  },
 ]
 
 export default function Courses(): ReactElement {
