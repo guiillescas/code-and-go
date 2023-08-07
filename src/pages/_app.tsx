@@ -1,14 +1,17 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
-import NavBar from '@/components/NavBar'
 import { LayoutGroup } from 'framer-motion'
 import Modal from 'react-modal'
-import { ThemeProvider } from 'styled-components'
+import { ToastContainer } from 'react-toastify'
 
 import * as Styles from 'styles/pages/app'
+
+import NavBar from 'components/NavBar'
+
+import AppProvider from '../hooks'
 
 import { primary } from 'styles/fonts'
 import { GlobalStyles } from 'styles/global'
@@ -16,8 +19,7 @@ import { theme } from 'styles/themes/default'
 
 import Loading from './loading'
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
 
 Modal.setAppElement('#__next')
 
@@ -41,29 +43,30 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router])
 
   return (
-    <ThemeProvider theme={theme}>
+    <AppProvider>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <title>Code&go</title>
       </Head>
+
       <GlobalStyles theme={theme} />
-      <ToastContainer theme='dark' />
+      <ToastContainer theme="dark" />
 
       <LayoutGroup>
         <Styles.AppContainer className={primary.className}>
           {isLoading ? (
             <Loading />
           ) : (
-            <>
+            <Fragment>
               <NavBar />
 
               <Component {...pageProps} />
-            </>
+            </Fragment>
           )}
         </Styles.AppContainer>
       </LayoutGroup>
-    </ThemeProvider>
+    </AppProvider>
   )
 }
 
