@@ -1,9 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
 
+import { useAuth } from '@/hooks/useAuth'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { GetServerSidePropsContext } from 'next'
+import { signIn, useSession } from 'next-auth/react'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import Button from 'components/Button'
@@ -13,7 +18,7 @@ import { validationMessages } from 'constants/validationMessages'
 
 import * as Styles from './styles'
 
-import { FormProps } from './types'
+import { FormProps, LoginPageProps } from './types'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,7 +27,9 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().required(validationMessages.requiredField),
 })
 
-export default function Login(): ReactElement {
+export default function Login(props: LoginPageProps): ReactElement {
+  const { login } = useAuth()
+
   const {
     register,
     handleSubmit,
@@ -31,9 +38,15 @@ export default function Login(): ReactElement {
     resolver: yupResolver(loginSchema),
   })
 
-  function handleLogin() {
-    console.log('login')
+  function handleLogin(data: FormProps) {
+    login(data)
   }
+
+  useEffect(() => {
+    if (props.isDirtyRedirect) {
+      toast.warning('Faça login para continuar')
+    }
+  }, [])
 
   return (
     <Styles.LoginContainer>
@@ -63,13 +76,13 @@ export default function Login(): ReactElement {
         </form>
 
         <div className="or">
-          <div></div>
+          <span></span>
           <p>ou</p>
-          <div></div>
+          <span></span>
         </div>
 
         <div className="social-medias-buttons">
-          <button type="button">
+          <button type="button" onClick={() => signIn()}>
             <Image
               src="/google-logo.png"
               alt="Logo do Google"
@@ -87,4 +100,24 @@ export default function Login(): ReactElement {
       </div>
     </Styles.LoginContainer>
   )
+}
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const cookies = parseCookies(ctx)
+
+  if (cookies.isDirtyRedirect) {
+    destroyCookie(ctx, 'isDirtyRedirect')
+
+    return {
+      props: {
+        isDirtyRedirect: true,
+      },
+    }
+  }
+
+  return {
+    props: {
+      isDirtyRedirect: false,
+    },
+  }
 }

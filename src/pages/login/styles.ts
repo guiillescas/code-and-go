@@ -64,7 +64,7 @@ export const LoginContainer = styled.main`
 
       margin-top: 1rem;
 
-      > div {
+      > span {
         width: 100%;
         max-width: 100px;
         min-width: 50px;
