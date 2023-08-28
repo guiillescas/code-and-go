@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ReactElement, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { ReactElement, useEffect, useState } from 'react'
 
-import { useAuth } from '@/hooks/useAuth'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetServerSidePropsContext } from 'next'
-import { signIn, useSession } from 'next-auth/react'
-import { destroyCookie, parseCookies, setCookie } from 'nookies'
+import { signIn } from 'next-auth/react'
+import { destroyCookie, parseCookies } from 'nookies'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
@@ -15,6 +15,8 @@ import Button from 'components/Button'
 import Input from 'components/inputs/input'
 
 import { validationMessages } from 'constants/validationMessages'
+
+import { useAuth } from 'hooks/useAuth'
 
 import * as Styles from './styles'
 
@@ -28,7 +30,10 @@ const loginSchema = Yup.object().shape({
 })
 
 export default function Login(props: LoginPageProps): ReactElement {
+  const router = useRouter()
   const { login } = useAuth()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
@@ -39,7 +44,15 @@ export default function Login(props: LoginPageProps): ReactElement {
   })
 
   function handleLogin(data: FormProps) {
+    setIsLoading(true)
+
     login(data)
+      .then(() => {
+        router.push('/')
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   useEffect(() => {
@@ -72,7 +85,9 @@ export default function Login(props: LoginPageProps): ReactElement {
             <Link href="/recover-password">Recuperar senha</Link>
           </div>
 
-          <Button type="submit">Entrar</Button>
+          <Button isLoading={isLoading} type="submit">
+            Entrar
+          </Button>
         </form>
 
         <div className="or">
