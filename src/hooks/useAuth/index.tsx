@@ -21,7 +21,7 @@ export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState({} as UserProps)
 
-  function login({ email, password }: LoginProps) {
+  async function login({ email, password }: LoginProps) {
     api
       .post<LoginRequestProps>('/auth/login', {
         email,
@@ -53,6 +53,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
 
         toast.error('Erro inesperado. Tente novamente mais tarde.')
+
+        throw new Error()
       })
   }
 
