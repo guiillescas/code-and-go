@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useEffect, useState } from 'react'
 
 import { LayoutGroup } from 'framer-motion'
+import { SessionProvider } from 'next-auth/react'
 import Modal from 'react-modal'
 import { ToastContainer } from 'react-toastify'
 
@@ -28,6 +29,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  const pagesThatShouldNotAppearOPage = ['/login', '/register']
+
   useEffect(() => {
     const handleStart = (url: string) => {
       url !== router.pathname ? setIsLoading(true) : setIsLoading(false)
@@ -43,30 +46,34 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router])
 
   return (
-    <AppProvider>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SessionProvider session={pageProps.session}>
+      <AppProvider>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Code&go</title>
-      </Head>
+          <title>Code&go</title>
+        </Head>
 
-      <GlobalStyles theme={theme} />
-      <ToastContainer theme="dark" />
+        <GlobalStyles theme={theme} />
+        <ToastContainer theme="dark" />
 
-      <LayoutGroup>
-        <Styles.AppContainer className={primary.className}>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <Fragment>
-              <NavBar />
+        <LayoutGroup>
+          <Styles.AppContainer className={primary.className}>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <Fragment>
+                {!pagesThatShouldNotAppearOPage.includes(router.asPath) && (
+                  <NavBar />
+                )}
 
-              <Component {...pageProps} />
-            </Fragment>
-          )}
-        </Styles.AppContainer>
-      </LayoutGroup>
-    </AppProvider>
+                <Component {...pageProps} />
+              </Fragment>
+            )}
+          </Styles.AppContainer>
+        </LayoutGroup>
+      </AppProvider>
+    </SessionProvider>
   )
 }
 

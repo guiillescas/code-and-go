@@ -53,7 +53,7 @@ export const GlobalStyles = createGlobalStyle<{ theme: ThemeInterface }>`
     font-size: 1rem;
 
     &:focus {
-      outline: 1px solid ${({ theme }) => theme.colors.green[500]};
+      outline: 1px solid ${({ theme }) => theme.colors.primary[500]};
     }
   }
 

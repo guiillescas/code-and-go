@@ -7,12 +7,13 @@ export const theme = {
       700: '#343a40',
       900: '#212529',
     },
-
+    primary: {
+      500: '#3388FF',
+    },
     white: {
       500: '#F7F7FF',
       600: '#e4e4e4',
     },
-
     green: {
       100: '#D8F3EE',
       300: '#8ADBCB',
@@ -26,8 +27,8 @@ export const theme = {
       300: '#fca5a5',
       500: '#ef4444',
       700: '#b91c1c',
-      900: '#7f1d1d'
-    }
+      900: '#7f1d1d',
+    },
   },
 
   font: {

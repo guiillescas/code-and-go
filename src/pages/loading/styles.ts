@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const LoadingContainer = styled.div`
   width: 100vw;
@@ -13,4 +13,4 @@ export const LoadingContainer = styled.div`
     font-size: 3rem;
     margin-bottom: 0.5rem;
   }
-`;
+`

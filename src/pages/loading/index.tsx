@@ -1,10 +1,10 @@
-
 import { ReactElement } from 'react'
+
+import Loading from '@/components/Loading'
 import { Boogaloo } from '@next/font/google'
+import { useTheme } from 'styled-components'
 
 import * as Styles from './styles'
-import Loading from '@/components/Loading'
-import { useTheme } from 'styled-components'
 
 const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
 

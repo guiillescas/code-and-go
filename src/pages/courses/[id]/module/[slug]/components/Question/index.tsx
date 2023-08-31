@@ -9,18 +9,25 @@ export default function Question(props: QuestionProps): ReactElement {
     <Styles.QuestionContainer>
       <p>{props.title}</p>
 
-      {props.alternatives.map((alternative) => (
-        <div className="option" key={alternative.id} onClick={() => props.setAlternativeId(alternative.id)}>
-          <input
-            type="radio"
-            name={props.title}
-            id={alternative.description}
-            value={alternative.id}
-            className="radio"
-          />
-          <label htmlFor={alternative.description}>{alternative.description}</label>
-        </div>
-      ))}
+      {props.alternatives &&
+        props.alternatives.map((alternative) => (
+          <div
+            className="option"
+            key={alternative.id}
+            onClick={() => props.setAlternativeId(alternative.id)}
+          >
+            <input
+              type="radio"
+              name={props.title}
+              id={alternative.description}
+              value={alternative.id}
+              className="radio"
+            />
+            <label htmlFor={alternative.description}>
+              {alternative.description}
+            </label>
+          </div>
+        ))}
     </Styles.QuestionContainer>
   )
 }
