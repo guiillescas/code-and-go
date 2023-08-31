@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { lighten } from 'polished'
+import styled from 'styled-components'
 
 interface IContainerProps {
   isDisabled?: boolean
@@ -28,7 +28,8 @@ export const Container = styled.div<IContainerProps>`
     user-select: none;
 
     &:hover input ~ .checkmark {
-      background-color: ${({ theme, isDisabled }) => !isDisabled && lighten(0.8, theme.colors.black)};
+      background-color: ${({ theme, isDisabled }) =>
+        !isDisabled && lighten(0.8, theme.colors.neutral[900])};
     }
 
     a {
@@ -43,7 +44,7 @@ export const Container = styled.div<IContainerProps>`
       width: 0;
 
       &:checked ~ .checkmark {
-        background-color: ${({ theme }) => theme.colors.black};
+        background-color: ${({ theme }) => theme.colors.neutral[900]};
       }
 
       &:checked ~ .checkmark:after {
@@ -60,7 +61,8 @@ export const Container = styled.div<IContainerProps>`
       background-color: #eee;
       border-radius: 4px;
 
-      border: ${({ theme, error }) => (error ? `1px solid ${theme.colors.primary[500]}` : '')};
+      border: ${({ theme, error }) =>
+        error ? `1px solid ${theme.colors.primary[500]}` : ''};
 
       transition: background-color 0.1s;
 
@@ -87,7 +89,8 @@ export const Container = styled.div<IContainerProps>`
   p {
     height: 14px;
     margin-top: 0.25rem;
-    color: ${({ theme, error }) => (error ? theme.colors.primary[500] : 'transparent')};
+    color: ${({ theme, error }) =>
+      error ? theme.colors.primary[500] : 'transparent'};
 
     transition: color 0.1s;
   }

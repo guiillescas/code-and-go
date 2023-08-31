@@ -1,10 +1,11 @@
 import { IBM_Plex_Sans as IBMPlexSans } from 'next/font/google'
 
+import { useTheme } from 'styled-components'
+
 import * as Style from './styles'
 
 import Loading from '../Loading'
 import { ButtonProps, ButtonVariantsEnum } from './types'
-import { useTheme } from 'styled-components'
 
 const IBMSansPlex = IBMPlexSans({ subsets: ['latin'], weight: '500' })
 

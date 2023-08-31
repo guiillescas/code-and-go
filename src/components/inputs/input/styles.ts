@@ -23,7 +23,7 @@ export const Container = styled.div<ContainerProps>`
         error ? theme.colors.error[500] : theme.colors.neutral[300]};
     border-radius: 6px;
 
-    color: ${({ theme }) => theme.colors.neutral[100]};
+    color: ${({ theme }) => theme.colors.neutral[900]};
     font-size: 1rem;
     font-weight: initial;
 

@@ -24,7 +24,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     switch (variant) {
       case ButtonVariantsEnum.DEFAULT:
         return css`
-          background: ${({ theme }) => theme.colors.neutral[700]};
+          background: ${({ theme }) => theme.colors.primary[500]};
         `
 
       case ButtonVariantsEnum.PRIMARY:
