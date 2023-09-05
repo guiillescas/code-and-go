@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 
-export const ModuleCardContainer = styled.button`
+export const InlineCardContainer = styled.button`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+
+  width: 100%;
 
   padding: 1rem;
 
