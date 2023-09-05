@@ -6,14 +6,14 @@ import { destroyCookie, parseCookies } from 'nookies'
 import { cookies } from 'constants/cookies'
 
 export function setupAPIClient(ctx = undefined): AxiosInstance {
-  const userCookies = parseCookies()
+  const userCookies = parseCookies(ctx)
 
   const token = userCookies[cookies.token]
 
   const api = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
       'Access-Control-Allow-Origin': '*',
     },
   })

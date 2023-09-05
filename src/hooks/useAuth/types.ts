@@ -21,6 +21,7 @@ export interface LoginProps {
 export interface AuthContextData {
   user: UserProps
   login: (props: LoginProps) => Promise<void>
+  logout: () => void
 }
 
 export interface AuthProviderProps {

@@ -1,7 +1,7 @@
+import { useRouter } from 'next/router'
 import { createContext, useContext, useState } from 'react'
 
-import { AxiosError } from 'axios'
-import nookies from 'nookies'
+import nookies, { destroyCookie } from 'nookies'
 import { toast } from 'react-toastify'
 
 import { cookies } from 'constants/cookies'
@@ -19,47 +19,55 @@ import {
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const router = useRouter()
+
   const [user, setUser] = useState({} as UserProps)
 
   async function login({ email, password }: LoginProps) {
-    api
-      .post<LoginRequestProps>('/auth/login', {
+    try {
+      const response = await api.post<LoginRequestProps>('/auth/login', {
         email,
         password,
       })
-      .then((response) => {
-        const userData = {
-          id: response.data.userId,
-          firstName: response.data.firstName,
-          email: response.data.email,
-        }
 
-        setUser(userData)
+      const userData = {
+        id: response.data.userId,
+        firstName: response.data.firstName,
+        email: response.data.email,
+      }
 
-        nookies.set(undefined, cookies.user, JSON.stringify(userData), {
-          maxAge: 30 * 24 * 60 * 60,
-          path: '/',
-        })
-        nookies.set(undefined, cookies.token, response.data.token, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: '/',
-        })
+      setUser(userData)
+
+      nookies.set(undefined, cookies.user, JSON.stringify(userData), {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
       })
-      .catch((error: AxiosError) => {
-        if (error.response?.status === 400) {
-          toast.error('E-mail ou senha iválidos.')
-
-          return
-        }
-
-        toast.error('Erro inesperado. Tente novamente mais tarde.')
-
-        throw new Error()
+      nookies.set(undefined, cookies.token, `Bearer ${response.data.token}`, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
       })
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        toast.error('E-mail ou senha iválidos.')
+
+        return
+      }
+
+      toast.error('Erro inesperado. Tente novamente mais tarde.')
+
+      throw new Error(error)
+    }
+  }
+
+  function logout() {
+    destroyCookie(undefined, cookies.token)
+    destroyCookie(undefined, cookies.user)
+
+    router.push('/login')
   }
 
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
