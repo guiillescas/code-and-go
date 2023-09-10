@@ -1,4 +1,4 @@
-interface MenuProps {
+export interface MenuProps {
   id: number
   title: string
   link: string

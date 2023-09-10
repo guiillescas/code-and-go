@@ -8,6 +8,10 @@ export const CourseCardContainer = styled.div`
     min-height: 200px;
     max-height: 230px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     > img {
       width: 100%;
       height: 100%;

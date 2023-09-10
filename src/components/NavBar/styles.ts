@@ -59,8 +59,6 @@ export const NavBarContainer = styled.div`
       .profile-picture {
         position: relative;
 
-        border-radius: 50%;
-
         display: flex;
         flex-direction: center;
         align-items: center;
@@ -68,12 +66,62 @@ export const NavBarContainer = styled.div`
         cursor: pointer;
 
         &:hover {
-          opacity: 0.8;
+          > img {
+            opacity: 0.8;
+          }
+
+          .dropdown-menu {
+            display: block;
+          }
         }
 
         > img {
           border-radius: 50%;
           border: 2px solid ${({ theme }) => theme.colors.white[500]};
+
+          display: inline-block;
+
+          margin: 0.5rem;
+        }
+
+        .no-image-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border-radius: 50%;
+          border: 2px solid ${({ theme }) => theme.colors.white[500]};
+
+          margin: 0.5rem;
+
+          width: 40px;
+          height: 40px;
+        }
+
+        .dropdown-menu {
+          position: absolute;
+
+          width: 100%;
+          min-width: 150px;
+
+          display: none;
+
+          top: calc(40px + 0.5rem);
+
+          background: ${({ theme }) => theme.colors.neutral[900]};
+
+          > div {
+            padding: 0.5rem;
+
+            &:hover {
+              opacity: 0.8;
+            }
+
+            a {
+              text-decoration: none;
+              color: ${({ theme }) => theme.colors.white[500]};
+            }
+          }
         }
       }
     }

@@ -1,6 +1,5 @@
+import { CourseProps } from 'hooks/useCourse/types'
+
 export interface CourseCardProps {
-  id: string
-  title: string
-  imageUrl: string
-  description: string
+  course: CourseProps
 }
