@@ -4,6 +4,7 @@ import { api } from '@/services/api'
 
 import { MenuProps } from 'components/Breadcrumb/types'
 
+import { useAuth } from '../useAuth'
 import {
   CourseContextData,
   CourseProps,
@@ -16,6 +17,8 @@ export const CourseContext = createContext<CourseContextData>(
 )
 
 export function CourseProvider({ children }: CourseProviderProps) {
+  const { token } = useAuth()
+
   const [course, setCourse] = useState<CourseProps | null>(null)
   const [selectedModuule, setSelectedModuule] = useState<ModuleProps>(
     {} as ModuleProps,
@@ -23,11 +26,13 @@ export function CourseProvider({ children }: CourseProviderProps) {
   const [breadcrumb, setBreadcrumb] = useState<MenuProps[]>([])
 
   async function getCourse(courseId: string) {
-    api.get<CourseProps[]>('/course').then((response) => {
-      const course = response.data.filter((course) => course.id === courseId)
+    api(token)
+      .get<CourseProps[]>('/course')
+      .then((response) => {
+        const course = response.data.filter((course) => course.id === courseId)
 
-      setCourse(course[0])
-    })
+        setCourse(course[0])
+      })
   }
 
   return (

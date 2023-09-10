@@ -1,9 +1,19 @@
-import { ReactNode } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 export interface UserProps {
-  id: string
-  firstName: string
+  bio: string | null
+  courseIds: string[]
   email: string
+  experiencePoints: number
+  firstName: string
+  friendIds: string[]
+  // TODO - Arruamr tipagem
+  friendshipRequests: any[]
+  id: string
+  lastName: string
+  level: string
+  profilePicture: string | null
+  streakCount: number
 }
 
 export interface LoginRequestProps {
@@ -20,6 +30,8 @@ export interface LoginProps {
 
 export interface AuthContextData {
   user: UserProps
+  token: string
+  setToken: Dispatch<SetStateAction<string>>
   login: (props: LoginProps) => Promise<void>
   logout: () => void
 }
