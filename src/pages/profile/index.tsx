@@ -1,10 +1,9 @@
-import { headers } from 'next/dist/client/components/headers'
 import Image from 'next/image'
 import { ReactElement, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetServerSidePropsContext } from 'next'
-import { parseCookies, setCookie } from 'nookies'
+import nookies, { parseCookies, setCookie } from 'nookies'
 import { useForm } from 'react-hook-form'
 import { MdOutlineHideImage } from 'react-icons/md'
 import { toast } from 'react-toastify'
@@ -34,7 +33,7 @@ const profileSchema = Yup.object().shape({
 })
 
 export default function Profile(): ReactElement {
-  const { user, token } = useAuth()
+  const { user, setUser, token } = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -43,16 +42,37 @@ export default function Profile(): ReactElement {
     defaultValues: {
       name: user.firstName,
       email: user.email,
+      isPrivate: user.visibility === 2,
     },
   })
 
   function updateProfile(data: FormProps) {
     setIsLoading(true)
 
+    const formattedUser = {
+      firstName: data.name,
+      lastName: 'data.name',
+      visibility: data.isPrivate ? 2 : 1,
+      bio: '',
+      email: data.email,
+    }
+
     api(token)
-      .post(`/user/${user.id}/edit`, data)
+      .post(`/user/${user.id}/edit`, formattedUser)
       .then((response) => {
         toast.success('Perfil atualizado com sucesso')
+
+        setUser(response.data)
+
+        nookies.set(
+          undefined,
+          cookiesNames.user,
+          JSON.stringify(response.data),
+          {
+            maxAge: 30 * 24 * 60 * 60,
+            path: '/',
+          },
+        )
       })
       .catch(() => {
         toast.error('Erro inesperado. Tente novamente mais tarde')

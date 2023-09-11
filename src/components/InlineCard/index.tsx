@@ -7,9 +7,9 @@ import { InlineCardProps } from './types'
 export default function InlineCard(props: InlineCardProps): ReactElement {
   return (
     <Styles.InlineCardContainer onClick={props.handleOnClickCard}>
-      <h3>{props.section.name}</h3>
+      <h3>{props.name}</h3>
 
-      <p>{props.section.description}</p>
+      <p>{props.description}</p>
     </Styles.InlineCardContainer>
   )
 }

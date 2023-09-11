@@ -62,7 +62,7 @@ export default function Login(): ReactElement {
       password: data.password,
     }
 
-    api
+    api()
       .post('/auth/register', formattedData)
       .then(() => {
         toast.success('Conta criada com sucesso!')

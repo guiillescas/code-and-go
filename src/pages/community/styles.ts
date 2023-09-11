@@ -37,7 +37,11 @@ export const CommunityContainer = styled.div`
   #friends-requests {
     margin-top: 4rem;
 
-    p {
+    > h2 {
+      margin-bottom: 1rem;
+    }
+
+    > p {
       text-align: center;
       color: ${({ theme }) => theme.colors.neutral[100]};
       margin-top: 1.5rem;

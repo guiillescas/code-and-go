@@ -21,6 +21,10 @@ export const HomeContainer = styled.main`
       justify-content: flex-start;
     }
   }
+
+  #courses {
+    margin-top: 5rem;
+  }
 `
 
 export const HomeIntroCard = styled.div`
@@ -65,4 +69,12 @@ export const HomeIntroCard = styled.div`
       margin-left: 2px;
     }
   }
+`
+
+export const CoursesWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 340fr));
+  gap: 1.25rem;
+
+  margin-top: 1.5rem;
 `

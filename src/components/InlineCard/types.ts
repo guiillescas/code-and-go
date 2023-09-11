@@ -1,6 +1,7 @@
 import { SectionProps } from 'hooks/useCourse/types'
 
 export interface InlineCardProps {
-  section: SectionProps
+  name: string
+  description: string
   handleOnClickCard: () => void
 }

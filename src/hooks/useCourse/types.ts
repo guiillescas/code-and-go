@@ -2,6 +2,31 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 
 import { MenuProps } from 'components/Breadcrumb/types'
 
+export interface ExerciseProps {
+  id: string
+  title: string
+  description: string
+  baseCode: string
+  testCases: [
+    {
+      id: string
+      title: string
+    },
+  ]
+}
+
+export interface AlternativeProps {
+  id: string
+  description: string
+}
+
+export interface QuestionProps {
+  id: string
+  title: string
+  description: string
+  alternatives: AlternativeProps[]
+}
+
 export interface ModuleProps {
   id: string
   name: string
@@ -18,7 +43,7 @@ export interface SectionProps {
   id: string
   name: string
   description: string
-  modules: any[]
+  modules: ModuleProps[]
 }
 
 export interface CourseProps {

@@ -1,14 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetServerSidePropsContext } from 'next'
 import { signIn } from 'next-auth/react'
 import { destroyCookie, parseCookies } from 'nookies'
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import Button from 'components/Button'
@@ -43,23 +42,26 @@ export default function Login(props: LoginPageProps): ReactElement {
     resolver: yupResolver(loginSchema),
   })
 
-  function handleLogin(data: FormProps) {
+  async function handleLogin(data: FormProps) {
     setIsLoading(true)
 
-    login(data)
+    await login(data)
       .then(() => {
         router.push('/')
+      })
+      .catch(() => {
+        console.log('Error')
       })
       .finally(() => {
         setIsLoading(false)
       })
   }
 
-  useEffect(() => {
-    if (props.isDirtyRedirect) {
-      toast.warning('Faça login para continuar')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (props.isDirtyRedirect) {
+  //     toast.warning('Faça login para continuar')
+  //   }
+  // }, [])
 
   return (
     <Styles.LoginContainer>
@@ -81,9 +83,9 @@ export default function Login(props: LoginPageProps): ReactElement {
             error={errors.password && errors.password.message}
           />
 
-          <div className="recover-password">
+          {/* <div className="recover-password">
             <Link href="/recover-password">Recuperar senha</Link>
-          </div>
+          </div> */}
 
           <Button isLoading={isLoading} type="submit">
             Entrar

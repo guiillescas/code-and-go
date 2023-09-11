@@ -54,7 +54,7 @@ export default function NavBar(): ReactElement {
           <div className="profile-picture">
             {user.profilePicture ? (
               <Image
-                src="/me.jpeg"
+                src={user.profilePicture}
                 alt={`Imagem de ${user.firstName}`}
                 width={40}
                 height={40}

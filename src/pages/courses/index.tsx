@@ -1,38 +1,34 @@
-import { ReactElement } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
-import CourseCard from '@/components/CourseCard'
+import CourseCard from 'components/CourseCard'
+
+import { useAuth } from 'hooks/useAuth'
+import { CourseProps } from 'hooks/useCourse/types'
+
+import { api } from 'services/api'
 
 import * as Styles from './styles'
 
-const courses = [
-  {
-    id: '337c376e-ce44-4899-9c14-044052540082',
-    title: 'JavaScript',
-    description: 'The Code&Go base Javascript Course',
-    imageUrl: '/js.jpeg',
-  },
-  {
-    id: '337c376e-ce44-4899-9c14-04405254008',
-    title: 'Typescript',
-    description: 'The Code&Go base Typescript Course',
-    imageUrl: '/ts.png',
-  },
-]
-
 export default function Courses(): ReactElement {
+  const { token } = useAuth()
+
+  const [courses, setCourses] = useState<CourseProps[]>([])
+
+  useEffect(() => {
+    api(token)
+      .get<CourseProps[]>('/course')
+      .then((response) => {
+        setCourses(response.data)
+      })
+  }, [])
+
   return (
     <Styles.CoursesContainer>
       <h1>Meus cursos</h1>
 
       <Styles.CoursesWrapper>
         {courses.map((course) => (
-          <CourseCard
-            key={course.id}
-            id={course.id}
-            title={course.title}
-            description={course.description}
-            imageUrl={course.imageUrl}
-          />
+          <CourseCard key={course.id} course={course} />
         ))}
       </Styles.CoursesWrapper>
     </Styles.CoursesContainer>

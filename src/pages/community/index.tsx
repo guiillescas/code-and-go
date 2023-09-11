@@ -1,13 +1,16 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import nookies from 'nookies'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import Button from 'components/Button'
 import Input from 'components/inputs/input'
+import FriendshipRequestCard from 'pages/profile/components/FriendshipRequestCard'
 
+import { cookies as cookiesNames } from 'constants/cookies'
 import { validationMessages } from 'constants/validationMessages'
 
 import { useAuth } from 'hooks/useAuth'
@@ -23,7 +26,7 @@ const communitySchema = Yup.object().shape({
 })
 
 export default function Community(): ReactElement {
-  const { user, token } = useAuth()
+  const { user, setUser, token } = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -40,7 +43,7 @@ export default function Community(): ReactElement {
 
     api(token)
       .post(`/user/${user.id}/request/${data.otherUserId}`, {
-        message: 'Vamos ser amigos?',
+        message: null,
       })
       .then(() => {
         toast.success('Pedido de amizade enviado com sucesso!')
@@ -52,6 +55,39 @@ export default function Community(): ReactElement {
         setIsLoading(false)
       })
   }
+
+  async function handleResponseFriendship(
+    response: number,
+    requesterId: string,
+    requestId: string,
+  ) {
+    api(token)
+      .post(`/user/${requesterId}/request/${requestId}/response`, {
+        Response: response,
+      })
+      .then((res) => console.log(res))
+      .catch(() => {
+        toast.error('Erro inesperado. Tente novamente mais tarde.')
+      })
+  }
+
+  useEffect(() => {
+    api(token)
+      .get(`/user/${user.id}`)
+      .then((response) => {
+        setUser(response.data)
+
+        nookies.set(
+          undefined,
+          cookiesNames.user,
+          JSON.stringify(response.data),
+          {
+            maxAge: 30 * 24 * 60 * 60,
+            path: '/',
+          },
+        )
+      })
+  }, [setUser, token, user.id])
 
   return (
     <Styles.CommunityContainer>
@@ -77,7 +113,21 @@ export default function Community(): ReactElement {
       <section id="friends-requests">
         <h2>Pedidos de amizade</h2>
 
-        <p>Você não tem nenhum pedido de amizade pendente.</p>
+        {user.friendshipRequests?.length > 0 ? (
+          user.friendshipRequests.map((friendshipRequest) => (
+            <FriendshipRequestCard
+              key={friendshipRequest.id}
+              id={friendshipRequest.id}
+              message={friendshipRequest.message}
+              name={friendshipRequest.requesterId}
+              profilePicture={''}
+              requesterId={friendshipRequest.requesterId}
+              handleResponseFriendship={handleResponseFriendship}
+            />
+          ))
+        ) : (
+          <p>Você não tem nenhum pedido de amizade pendente.</p>
+        )}
       </section>
     </Styles.CommunityContainer>
   )

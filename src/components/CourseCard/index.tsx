@@ -20,7 +20,7 @@ export default function CourseCard(props: CourseCardProps): ReactElement {
   function handleClickCourseCard() {
     setCourse(props.course)
 
-    router.push(`/courses/${props.course.id}`)
+    router.push(`/courses/${props.course.id}/sections`)
   }
 
   return (
