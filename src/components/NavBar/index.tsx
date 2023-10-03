@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
 import { Boogaloo } from '@next/font/google'
 import { FiMenu, FiUser } from 'react-icons/fi'
 
-import DayCounter from './components/DayCounter'
+import CoffeeCounter from './components/CoffeeCounter'
 
 import { useAuth } from 'hooks/useAuth'
 
@@ -17,13 +17,18 @@ const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
 export default function NavBar(): ReactElement {
   const router = useRouter()
 
-  const { user, logout, token } = useAuth()
+  const { user, logout } = useAuth()
 
   const [isMenuBarVisible, setIsMenuBarVisible] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   function handleToggleMenu() {
     setIsMenuBarVisible((prevState) => !prevState)
   }
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <Styles.NavBarContainer>
@@ -49,7 +54,7 @@ export default function NavBar(): ReactElement {
         </div>
 
         <div className="right-side-wrapper">
-          <DayCounter couter={user.streakCount} />
+          <CoffeeCounter couter={isClient ? user.streakCount : 0} />
 
           <div className="profile-picture">
             {user.profilePicture ? (

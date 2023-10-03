@@ -21,9 +21,9 @@ export const AccordionContainer = styled.div<AccordionContainerProps>`
     padding: 1rem;
 
     background: ${({ theme }) => theme.colors.neutral[700]};
-    
+
     box-shadow: 0 20px 100px -20px #000;
-    
+
     &:hover {
       cursor: pointer;
 
@@ -37,11 +37,11 @@ export const AccordionContainer = styled.div<AccordionContainerProps>`
 
   > .content {
     width: 100%;
-    height: ${({ isOpen }) => isOpen ? 'fit-content' : '0px'};
+    height: ${({ isOpen }) => (isOpen ? 'fit-content' : '0px')};
 
     overflow: auto;
 
-    padding: ${({ isOpen }) => isOpen ? '0.75rem 1rem' : '0px'};
+    padding: ${({ isOpen }) => (isOpen ? '0.75rem 1rem' : '0px')};
 
     background: ${({ theme }) => theme.colors.neutral[700]};
 

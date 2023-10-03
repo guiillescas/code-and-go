@@ -19,6 +19,7 @@ export interface AccordionProps {
   title: string
   isOpen: boolean
   children: ReactNode
+  onAccordionOpen?: () => void
 }
 
 export interface AccordionContainerProps {
