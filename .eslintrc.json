@@ -43,6 +43,7 @@
             "/(hooks)/"
           ],
           "/(services)/",
+          "/(layouts)/",
           "/(lib)/",
           "/(data)/",
           "/(tokens)/",
