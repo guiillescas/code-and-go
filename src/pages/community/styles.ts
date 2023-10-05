@@ -37,14 +37,44 @@ export const CommunityContainer = styled.div`
   #friends-requests {
     margin-top: 4rem;
 
-    > h2 {
-      margin-bottom: 1rem;
-    }
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
 
-    > p {
-      text-align: center;
-      color: ${({ theme }) => theme.colors.neutral[100]};
-      margin-top: 1.5rem;
+    > div {
+      > h2 {
+        margin-bottom: 1rem;
+      }
+
+      &.left {
+        > p {
+          text-align: center;
+          color: ${({ theme }) => theme.colors.neutral[100]};
+          margin-top: 1.5rem;
+        }
+      }
+      &.right {
+      }
+    }
+  }
+`
+
+export const RankingPosition = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .image-wrapper {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    img {
+      border-radius: 50%;
+      object-fit: contain;
     }
   }
 `

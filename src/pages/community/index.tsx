@@ -1,6 +1,8 @@
+import Image from 'next/image'
 import { ReactElement, useEffect, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import AppLayout from 'layouts/AppLayout'
 import nookies from 'nookies'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -90,45 +92,70 @@ export default function Community(): ReactElement {
   }, [setUser, token, user.id])
 
   return (
-    <Styles.CommunityContainer>
-      <section id="add-friend">
-        <form onSubmit={handleSubmit(handleSubmitFriendship)}>
-          <h2>Adicionar amigo</h2>
+    <AppLayout>
+      <Styles.CommunityContainer>
+        <section id="add-friend">
+          <form onSubmit={handleSubmit(handleSubmitFriendship)}>
+            <h2>Adicionar amigo</h2>
 
-          <div>
-            <Input
-              register={register}
-              name="otherUserId"
-              label="ID do seu amigo"
-              error={errors.otherUserId && errors.otherUserId.message}
-            />
+            <div>
+              <Input
+                register={register}
+                name="otherUserId"
+                label="ID do seu amigo"
+                error={errors.otherUserId && errors.otherUserId.message}
+              />
 
-            <Button type="submit" isLoading={isLoading}>
-              Enviar pedido de amizade
-            </Button>
+              <Button type="submit" isLoading={isLoading}>
+                Enviar pedido de amizade
+              </Button>
+            </div>
+          </form>
+        </section>
+
+        <section id="friends-requests">
+          <div className="left">
+            <h2>Pedidos de amizade</h2>
+
+            {user.friendshipRequests?.length > 0 ? (
+              user.friendshipRequests.map((friendshipRequest) => (
+                <FriendshipRequestCard
+                  key={friendshipRequest.id}
+                  id={friendshipRequest.id}
+                  message={friendshipRequest.message}
+                  name={friendshipRequest.requesterId}
+                  profilePicture={''}
+                  requesterId={friendshipRequest.requesterId}
+                  handleResponseFriendship={handleResponseFriendship}
+                />
+              ))
+            ) : (
+              <p>Você não tem nenhum pedido de amizade pendente.</p>
+            )}
           </div>
-        </form>
-      </section>
 
-      <section id="friends-requests">
-        <h2>Pedidos de amizade</h2>
+          <div className="right">
+            <h2>Ranking</h2>
 
-        {user.friendshipRequests?.length > 0 ? (
-          user.friendshipRequests.map((friendshipRequest) => (
-            <FriendshipRequestCard
-              key={friendshipRequest.id}
-              id={friendshipRequest.id}
-              message={friendshipRequest.message}
-              name={friendshipRequest.requesterId}
-              profilePicture={''}
-              requesterId={friendshipRequest.requesterId}
-              handleResponseFriendship={handleResponseFriendship}
-            />
-          ))
-        ) : (
-          <p>Você não tem nenhum pedido de amizade pendente.</p>
-        )}
-      </section>
-    </Styles.CommunityContainer>
+            <div className="ranking">
+              <Styles.RankingPosition>
+                <span>
+                  <strong>1º</strong>
+                </span>
+                <div className="image-wrapper">
+                  <Image
+                    src="/ts.png"
+                    alt={`Imagem de `}
+                    width={50}
+                    height={50}
+                  />
+                </div>
+                <p>Guilherme</p>
+              </Styles.RankingPosition>
+            </div>
+          </div>
+        </section>
+      </Styles.CommunityContainer>
+    </AppLayout>
   )
 }
