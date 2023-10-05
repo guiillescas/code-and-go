@@ -10,8 +10,6 @@ import { ToastContainer } from 'react-toastify'
 
 import * as Styles from 'styles/pages/app'
 
-import NavBar from 'components/NavBar'
-
 import AppProvider from '../hooks'
 
 import { primary } from 'styles/fonts'
@@ -28,8 +26,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
-
-  const pagesThatShouldNotAppearOPage = ['/login', '/register']
 
   useEffect(() => {
     const handleStart = (url: string) => {
@@ -63,10 +59,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Loading />
             ) : (
               <Fragment>
-                {!pagesThatShouldNotAppearOPage.includes(router.asPath) && (
-                  <NavBar />
-                )}
-
                 <Component {...pageProps} />
               </Fragment>
             )}

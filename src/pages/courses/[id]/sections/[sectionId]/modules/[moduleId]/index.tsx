@@ -237,6 +237,29 @@ export default function Module(): ReactElement {
   }, [ctrlPress, enterPress])
 
   useEffect(() => {
+    if (!course) {
+      const courseId = router.query.id
+
+      api(token)
+        .get<CourseProps[]>('/course')
+        .then((response) => {
+          const course = response.data.filter(
+            (course) => course.id === courseId,
+          )
+
+          setCourse(course[0])
+        })
+    }
+  }, [
+    router.query.id,
+    selectedModuule.id,
+    selectedModuule.name,
+    setBreadcrumb,
+    setCourse,
+    token,
+  ])
+
+  useEffect(() => {
     if (course) {
       const moduleId = router.query.moduleId
 
@@ -260,42 +283,6 @@ export default function Module(): ReactElement {
         })
     }
   }, [course, course?.id, router.query.moduleId, token])
-
-  useEffect(() => {
-    if (!course) {
-      const courseId = router.query.id
-
-      api(token)
-        .get<CourseProps[]>('/course')
-        .then((response) => {
-          const course = response.data.filter(
-            (course) => course.id === courseId,
-          )
-
-          setCourse(course[0])
-        })
-    }
-
-    // setBreadcrumb([
-    //   {
-    //     id: 1,
-    //     title: `${course?.name}`,
-    //     link: `/courses/${course?.id}`,
-    //   },
-    //   {
-    //     id: 2,
-    //     title: `${selectedModuule?.name}`,
-    //     link: `/courses/${course?.id}/sections/${selectedModuule.id}`,
-    //   },
-    // ])
-  }, [
-    router.query.id,
-    selectedModuule.id,
-    selectedModuule.name,
-    setBreadcrumb,
-    setCourse,
-    token,
-  ])
 
   return (
     <Styles.ModuleContainer>

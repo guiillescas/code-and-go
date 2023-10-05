@@ -8,7 +8,7 @@ import { AxiosError } from 'axios'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { separarNames } from 'utils/separateNames'
+import { separateNames } from 'utils/separateNames'
 import * as Yup from 'yup'
 
 import Button from 'components/Button'
@@ -50,10 +50,17 @@ export default function Login(): ReactElement {
     resolver: yupResolver(loginSchema),
   })
 
-  function handleLogin(data: FormProps) {
+  function handleRegister(data: FormProps) {
     setIsLoading(true)
 
-    const { firstName, lastName } = separarNames(data.name)
+    if (data.name.split(' ').length <= 1) {
+      toast.warning('insira pelo menos 2 nomes')
+      setIsLoading(false)
+
+      return
+    }
+
+    const { firstName, lastName } = separateNames(data.name)
 
     const formattedData = {
       firstName,
@@ -88,7 +95,7 @@ export default function Login(): ReactElement {
       <div>
         <h1>Registre-se</h1>
 
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <form onSubmit={handleSubmit(handleRegister)}>
           <Input
             register={register}
             name="name"

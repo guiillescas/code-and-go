@@ -9,8 +9,6 @@ export const CourseContainer = styled.main`
   max-width: 1024px;
   margin: 0 auto;
 
-  margin-top: 1rem;
-
   > section {
     width: 100%;
 

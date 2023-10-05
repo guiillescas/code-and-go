@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect } from 'react'
 
+import AppLayout from 'layouts/AppLayout'
+
 import ModuleCard from 'components/InlineCard'
 
 import { useAuth } from 'hooks/useAuth'
@@ -34,23 +36,25 @@ export default function Course(): ReactElement {
   }, [router.query.id, setCourse, token])
 
   return (
-    <Styles.CourseContainer>
-      <section>
-        <h1>Curso de {course?.name}</h1>
+    <AppLayout>
+      <Styles.CourseContainer>
+        <section>
+          <h1>Curso de {course?.name}</h1>
 
-        <div className="content">
-          <h2>Seções</h2>
+          <div className="content">
+            <h2>Seções</h2>
 
-          {course?.sections.map((section) => (
-            <ModuleCard
-              key={section.id}
-              name={section.name}
-              description={section.description}
-              handleOnClickCard={() => handleOnClickCard(section.id)}
-            />
-          ))}
-        </div>
-      </section>
-    </Styles.CourseContainer>
+            {course?.sections.map((section) => (
+              <ModuleCard
+                key={section.id}
+                name={section.name}
+                description={section.description}
+                handleOnClickCard={() => handleOnClickCard(section.id)}
+              />
+            ))}
+          </div>
+        </section>
+      </Styles.CourseContainer>
+    </AppLayout>
   )
 }

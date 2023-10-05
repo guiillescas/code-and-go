@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import AppLayout from 'layouts/AppLayout'
 import { GetServerSidePropsContext } from 'next'
 import { parseCookies, setCookie } from 'nookies'
 
@@ -18,6 +19,7 @@ export default function Home() {
   const { user, token } = useAuth()
 
   const [courses, setCourses] = useState<CourseProps[]>([])
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
     api(token)
@@ -27,19 +29,23 @@ export default function Home() {
       })
   }, [token])
 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
-    <Styles.HomeContainer>
-      <section id="intro">
-        <div className="welcome">
-          <h1>
-            {user.firstName ? 'Olá, ' : 'Olá! '}
-            {user.firstName}
-          </h1>
+    <AppLayout>
+      <Styles.HomeContainer>
+        <section id="intro">
+          <div className="welcome">
+            <h1>
+              {isClient && user.firstName ? `Olá, ${user.firstName}` : 'Olá! '}
+            </h1>
 
-          <p>Que bom tê-lo aqui novamente</p>
-        </div>
+            <p>Que bom tê-lo aqui novamente</p>
+          </div>
 
-        {/* <Styles.HomeIntroCard>
+          {/* <Styles.HomeIntroCard>
           <h2>Continue de onde você parou</h2>
 
           <button type="button" title="Assistir a aula">
@@ -47,18 +53,19 @@ export default function Home() {
             <FiPlay />
           </button>
         </Styles.HomeIntroCard> */}
-      </section>
+        </section>
 
-      <section id="courses">
-        <h2>Cursos disponíveis</h2>
+        <section id="courses">
+          <h2>Cursos disponíveis</h2>
 
-        <Styles.CoursesWrapper>
-          {courses.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
-        </Styles.CoursesWrapper>
-      </section>
-    </Styles.HomeContainer>
+          <Styles.CoursesWrapper>
+            {courses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </Styles.CoursesWrapper>
+        </section>
+      </Styles.HomeContainer>
+    </AppLayout>
   )
 }
 

@@ -9,8 +9,6 @@ export const CourseContainer = styled.main`
   max-width: 1024px;
   margin: 0 auto;
 
-  margin-top: 1rem;
-
   > section {
     width: 100%;
 
@@ -29,6 +27,20 @@ export const CourseContainer = styled.main`
       width: 100%;
 
       margin-top: 1rem;
+
+      .exercise,
+      .question {
+        margin: 1rem 0 2rem;
+      }
+
+      .exercise {
+        .ecercise-wrapper {
+          > p {
+            margin-bottom: 1rem;
+            font-weight: 700;
+          }
+        }
+      }
 
       > h2 {
         font-size: 1.5rem;
