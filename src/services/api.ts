@@ -40,6 +40,8 @@ export function api(token?: string): AxiosInstance {
 
         redirect('/login')
       }
+
+      return Promise.reject(error)
     },
   )
 
