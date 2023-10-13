@@ -4,9 +4,11 @@ import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 
 import { Boogaloo } from '@next/font/google'
-import { FiMenu, FiUser } from 'react-icons/fi'
+import { AiFillFire } from 'react-icons/ai'
+import { FiCoffee, FiMenu, FiUser } from 'react-icons/fi'
+import { useTheme } from 'styled-components'
 
-import CoffeeCounter from './components/CoffeeCounter'
+import Counter from './components/Counter'
 
 import { useAuth } from 'hooks/useAuth'
 
@@ -15,6 +17,7 @@ import * as Styles from './styles'
 const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
 
 export default function NavBar(): ReactElement {
+  const theme = useTheme()
   const router = useRouter()
 
   const { user, logout } = useAuth()
@@ -54,7 +57,15 @@ export default function NavBar(): ReactElement {
         </div>
 
         <div className="right-side-wrapper">
-          <CoffeeCounter couter={isClient ? user.streakCount : 0} />
+          <Counter
+            couter={isClient ? user.streakCount : 0}
+            icon={<AiFillFire color={theme?.colors.green[500]} />}
+          />
+          {/* TODO - Colocar as vidas ceertas */}
+          <Counter
+            couter={isClient ? user.streakCount : 0}
+            icon={<FiCoffee color={theme?.colors.green[500]} />}
+          />
 
           <div className="profile-picture">
             {user.profilePicture ? (

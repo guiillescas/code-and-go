@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CoffeeCounterContainer = styled.div`
+export const CounterContainer = styled.div`
   border-radius: 4px;
 
   padding: 0.5rem 1rem;
