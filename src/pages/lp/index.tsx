@@ -54,6 +54,12 @@ export default function LP(): ReactElement {
               divertida. Ganhe pontos por exercícios finalizados corretamente e
               fique no topo do ranking.
             </p>
+
+            <div className="button-wrapper">
+              <Button onClick={redirectToRegisterPage}>
+                Quero me cadastrar
+              </Button>
+            </div>
           </div>
 
           <div className="right">
@@ -73,8 +79,8 @@ export default function LP(): ReactElement {
             <Image
               src="/assets/rocket.svg"
               alt="Ilustração de um foguete"
-              width={180}
-              height={180}
+              width={210}
+              height={210}
             />
 
             <div>
@@ -97,8 +103,8 @@ export default function LP(): ReactElement {
             <Image
               src="/assets/friends.svg"
               alt="Ilustração de amigos conversando"
-              width={180}
-              height={180}
+              width={210}
+              height={210}
             />
           </div>
 
@@ -106,8 +112,8 @@ export default function LP(): ReactElement {
             <Image
               src="/assets/options.svg"
               alt="Ilustração de um foguete"
-              width={180}
-              height={180}
+              width={210}
+              height={210}
             />
 
             <div>

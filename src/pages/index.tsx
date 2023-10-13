@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import AppLayout from 'layouts/AppLayout'
 import { GetServerSidePropsContext } from 'next'
 import { parseCookies, setCookie } from 'nookies'
 
@@ -12,6 +11,8 @@ import { useAuth } from 'hooks/useAuth'
 import { CourseProps } from 'hooks/useCourse/types'
 
 import { api } from 'services/api'
+
+import AppLayout from 'layouts/AppLayout'
 
 import * as Styles from './styles'
 
@@ -44,15 +45,6 @@ export default function Home() {
 
             <p>Que bom tê-lo aqui novamente</p>
           </div>
-
-          {/* <Styles.HomeIntroCard>
-          <h2>Continue de onde você parou</h2>
-
-          <button type="button" title="Assistir a aula">
-            Continuar aula
-            <FiPlay />
-          </button>
-        </Styles.HomeIntroCard> */}
         </section>
 
         <section id="courses">

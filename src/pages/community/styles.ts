@@ -32,6 +32,50 @@ export const CommunityContainer = styled.div`
         }
       }
     }
+
+    .possible-friends-list-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      .possible-friend-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 100%;
+
+        background: ${({ theme }) => theme.colors.neutral[700]};
+
+        padding: 1rem;
+
+        border-radius: 6px;
+
+        > div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          > a {
+            margin-left: 1rem;
+
+            color: ${({ theme }) => theme.colors.white[500]};
+
+            transition: opacity 0.2s;
+
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+
+        > button {
+          max-width: 200px;
+        }
+      }
+    }
   }
 
   #friends-requests {
@@ -40,7 +84,7 @@ export const CommunityContainer = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 5rem;
 
     > div {
       > h2 {
@@ -48,6 +92,8 @@ export const CommunityContainer = styled.div`
       }
 
       &.left {
+        width: 100%;
+
         > p {
           text-align: center;
           color: ${({ theme }) => theme.colors.neutral[100]};

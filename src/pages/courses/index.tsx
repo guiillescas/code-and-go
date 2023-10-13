@@ -1,7 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 
 import Loading from '@/components/Loading'
-import AppLayout from 'layouts/AppLayout'
 import { useTheme } from 'styled-components'
 
 import CourseCard from 'components/CourseCard'
@@ -10,6 +9,8 @@ import { useAuth } from 'hooks/useAuth'
 import { CourseProps } from 'hooks/useCourse/types'
 
 import { api } from 'services/api'
+
+import AppLayout from 'layouts/AppLayout'
 
 import * as Styles from './styles'
 
@@ -56,7 +57,7 @@ export default function Courses(): ReactElement {
               <div className="message-wrapper">
                 <p>Você ainda não começou nenhum curso.</p>
                 <p>
-                  Para se inscrever em um cruso, vá até a <strong>Home</strong>{' '}
+                  Para se inscrever em um curso, vá até a <strong>Home</strong>{' '}
                   e escolha um curso!
                 </p>
               </div>

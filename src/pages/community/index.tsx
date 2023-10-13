@@ -1,8 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { ReactElement, useEffect, useState } from 'react'
 
+import { ButtonVariantsEnum } from '@/components/Button/types'
 import { yupResolver } from '@hookform/resolvers/yup'
-import AppLayout from 'layouts/AppLayout'
 import nookies from 'nookies'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -19,43 +20,95 @@ import { useAuth } from 'hooks/useAuth'
 
 import { api } from 'services/api'
 
+import AppLayout from 'layouts/AppLayout'
+
 import * as Styles from './styles'
 
-import { FormProps } from './types'
+import {
+  FormProps,
+  PossibleFriendsProps,
+  PossibleFriendsListProps,
+} from './types'
 
 const communitySchema = Yup.object().shape({
-  otherUserId: Yup.string().required(validationMessages.requiredField),
+  studentName: Yup.string().required(validationMessages.requiredField),
 })
 
 export default function Community(): ReactElement {
   const { user, setUser, token } = useAuth()
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSearchLoading, setIsSearchLoading] = useState(false)
+  const [isFriendRequestLoading, setIsFriendRequestLoading] = useState(false)
+
+  const [possibleFriends, setPossibleFriends] = useState<
+    PossibleFriendsListProps[]
+  >([])
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormProps>({
     resolver: yupResolver(communitySchema),
   })
 
-  function handleSubmitFriendship(data: FormProps) {
-    setIsLoading(true)
+  function handleSearchUserByName(data: FormProps) {
+    setIsSearchLoading(true)
 
     api(token)
-      .post(`/user/${user.id}/request/${data.otherUserId}`, {
+      .get(`/user/list?page=1&pagesize=10&name=${data.studentName}`)
+      .then((response) => {
+        setPossibleFriends(
+          response.data.data.map((possibleFriend: PossibleFriendsProps) => {
+            return {
+              ...possibleFriend,
+              isRequested: false,
+            }
+          }),
+        )
+      })
+      .catch(() => {
+        toast.error('Erro inesperado. Tente novamente mais tarde.')
+      })
+      .finally(() => {
+        setIsSearchLoading(false)
+      })
+  }
+
+  function handleSubmitFriendship(friendId: string) {
+    setIsFriendRequestLoading(true)
+
+    api(token)
+      .post(`/user/${user.id}/request/${friendId}`, {
         message: null,
       })
       .then(() => {
+        setPossibleFriends((prevState) => {
+          return prevState.map((possibleFriend) => {
+            if (possibleFriend.id === friendId) {
+              return {
+                ...possibleFriend,
+                isRequested: true,
+              }
+            } else {
+              return possibleFriend
+            }
+          })
+        })
         toast.success('Pedido de amizade enviado com sucesso!')
       })
       .catch(() => {
         toast.error('Erro inesperado. Tente novamente mais tarde.')
       })
       .finally(() => {
-        setIsLoading(false)
+        setIsFriendRequestLoading(false)
       })
+  }
+
+  function handleCancelSearch() {
+    reset()
+    setPossibleFriends([])
   }
 
   async function handleResponseFriendship(
@@ -65,7 +118,7 @@ export default function Community(): ReactElement {
   ) {
     api(token)
       .post(`/user/${requesterId}/request/${requestId}/response`, {
-        Response: response,
+        response,
       })
       .then((res) => console.log(res))
       .catch(() => {
@@ -95,22 +148,63 @@ export default function Community(): ReactElement {
     <AppLayout>
       <Styles.CommunityContainer>
         <section id="add-friend">
-          <form onSubmit={handleSubmit(handleSubmitFriendship)}>
+          <form onSubmit={handleSubmit(handleSearchUserByName)}>
             <h2>Adicionar amigo</h2>
 
             <div>
               <Input
                 register={register}
-                name="otherUserId"
-                label="ID do seu amigo"
-                error={errors.otherUserId && errors.otherUserId.message}
+                name="studentName"
+                label="Procure pelo nome do seu amigo"
+                error={errors.studentName && errors.studentName.message}
               />
 
-              <Button type="submit" isLoading={isLoading}>
-                Enviar pedido de amizade
+              <Button type="submit" isLoading={isSearchLoading}>
+                Procurar
+              </Button>
+              <Button
+                variant={ButtonVariantsEnum.SECONDARY}
+                onClick={handleCancelSearch}
+              >
+                Cancelar
               </Button>
             </div>
           </form>
+
+          <div className="possible-friends-list-wrapper">
+            {possibleFriends.length > 0 ? (
+              possibleFriends.map((possibleFriend, index) => (
+                <div key={possibleFriend.id} className="possible-friend-card">
+                  <div>
+                    <span>
+                      <strong>{index + 1}</strong>
+                    </span>
+
+                    <Link href={`/profile/${possibleFriend.id}`}>
+                      {possibleFriend.firstName} {possibleFriend.lastName}
+                    </Link>
+                  </div>
+
+                  <Button
+                    onClick={() => handleSubmitFriendship(possibleFriend.id)}
+                    isLoading={isFriendRequestLoading}
+                    disabled={possibleFriend.isRequested}
+                    variant={
+                      possibleFriend.isRequested
+                        ? ButtonVariantsEnum.PRIMARY
+                        : ButtonVariantsEnum.DEFAULT
+                    }
+                  >
+                    {possibleFriend.isRequested
+                      ? 'Pedido enviado'
+                      : 'Enviar pedido'}
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <p>Nenhum amigo encontrado com esse nome</p>
+            )}
+          </div>
         </section>
 
         <section id="friends-requests">
@@ -123,7 +217,7 @@ export default function Community(): ReactElement {
                   key={friendshipRequest.id}
                   id={friendshipRequest.id}
                   message={friendshipRequest.message}
-                  name={friendshipRequest.requesterId}
+                  name={friendshipRequest.requesterEmail}
                   profilePicture={''}
                   requesterId={friendshipRequest.requesterId}
                   handleResponseFriendship={handleResponseFriendship}

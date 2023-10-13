@@ -3,7 +3,7 @@ import { ReactElement, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetServerSidePropsContext } from 'next'
-import nookies, { parseCookies, setCookie } from 'nookies'
+import { parseCookies, setCookie } from 'nookies'
 import { useForm } from 'react-hook-form'
 import { MdOutlineHideImage } from 'react-icons/md'
 import { toast } from 'react-toastify'
@@ -36,7 +36,7 @@ const profileSchema = Yup.object().shape({
 })
 
 export default function Profile(): ReactElement {
-  const { user, setUser, token } = useAuth()
+  const { user, token, updateUser } = useAuth()
 
   const [profilePhoto, setProfilePhoto] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -74,21 +74,11 @@ export default function Profile(): ReactElement {
     }
 
     api(token)
-      .post(`/user/${user.id}/edit`, formattedUser)
+      .put(`/user/${user.id}/edit`, formattedUser)
       .then((response) => {
         toast.success('Perfil atualizado com sucesso')
 
-        setUser(response.data)
-
-        nookies.set(
-          undefined,
-          cookiesNames.user,
-          JSON.stringify(response.data),
-          {
-            maxAge: 30 * 24 * 60 * 60,
-            path: '/',
-          },
-        )
+        updateUser(response.data)
       })
       .catch(() => {
         toast.error('Erro inesperado. Tente novamente mais tarde')

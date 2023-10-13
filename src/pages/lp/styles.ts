@@ -164,6 +164,18 @@ export const LPContainer = styled.div`
           margin-top: 1rem;
           font-size: 1.25rem;
         }
+
+        .button-wrapper {
+          margin-top: 1rem;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          button {
+            max-width: 200px;
+          }
+        }
       }
 
       .right {
@@ -172,12 +184,12 @@ export const LPContainer = styled.div`
     }
 
     #benefits {
-      max-width: 768px;
+      max-width: 1024px;
       margin: 0 auto;
 
       > h2 {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.25rem;
 
         margin-bottom: 2.5rem;
       }
@@ -196,8 +208,13 @@ export const LPContainer = styled.div`
         }
 
         > div {
+          > h3 {
+            font-size: 1.5rem;
+          }
+
           p {
             margin-top: 1rem;
+            font-size: 1.125rem;
           }
         }
       }
@@ -213,19 +230,6 @@ export const LPContainer = styled.div`
           max-width: 300px;
         }
       }
-    }
-  }
-
-  #last-callback {
-    padding-top: 8rem;
-
-    background: ${({ theme }) =>
-      `linear-gradient(${theme.colors.white[500]}, ${theme.colors.neutral[900]})`};
-
-    > h4 {
-      text-align: center;
-
-      font-size: 2rem;
     }
   }
 `

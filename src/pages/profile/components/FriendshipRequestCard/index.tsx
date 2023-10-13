@@ -26,7 +26,7 @@ export default function FriendshipRequestCard(
           </div>
         )}
 
-        <p>{props.requesterId}</p>
+        <p>{props.name}</p>
       </div>
 
       <div>

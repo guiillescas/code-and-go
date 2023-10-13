@@ -8,7 +8,6 @@ import CodeEditorWindow from '@/components/CodeEditor'
 import ExerciseFeedbackModal from '@/components/ExerciseFeedbackModal'
 import { languageOptions } from '@/constants/languageOptions'
 import axios from 'axios'
-import AppLayout from 'layouts/AppLayout'
 import { toast } from 'react-toastify'
 import useKeyPress from 'utils/useKeyPress'
 
@@ -24,6 +23,8 @@ import {
 } from 'hooks/useCourse/types'
 
 import { api } from 'services/api'
+
+import AppLayout from 'layouts/AppLayout'
 
 import { defineTheme } from 'lib/defineTheme'
 
@@ -88,6 +89,8 @@ export default function Course(): ReactElement {
   const [language, setLanguage] = useState(languageOptions[0])
 
   const [isSuccess, setIsSuccess] = useState(false)
+
+  console.log({ code })
 
   const enterPress = useKeyPress('Enter')
   const ctrlPress = useKeyPress('Control')
