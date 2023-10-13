@@ -14,6 +14,8 @@ export const Container = styled(Modal)<ContainerProps>`
   display: flex;
   flex-direction: column;
 
+  margin: 1rem;
+
   background: ${({ theme }) => theme.colors.neutral[700]};
   border-radius: 1rem;
   z-index: 1500;
@@ -65,6 +67,10 @@ export const Container = styled(Modal)<ContainerProps>`
   .children {
     padding: 0.25rem 1.5rem 1rem;
 
+    max-height: 90vh;
+
     color: ${({ theme }) => theme.colors.neutral[100]};
+
+    overflow-y: auto;
   }
 `

@@ -2,7 +2,8 @@ import { ButtonHTMLAttributes } from 'react'
 
 export enum ButtonVariantsEnum {
   DEFAULT = 'DEFAULT',
-  PRIMARY = 'PRIMARY'
+  PRIMARY = 'PRIMARY',
+  SECONDARY = 'SECONDARY',
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

@@ -14,8 +14,6 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   font-size: 16px;
   line-height: 20px;
 
-  cursor: pointer;
-
   transition: opacity 0.2s;
 
   opacity: ${({ isLoading }) => (isLoading ? 0.8 : 1)};
@@ -30,6 +28,11 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
       case ButtonVariantsEnum.PRIMARY:
         return css`
           background: ${({ theme }) => theme.colors.green[700]};
+        `
+
+      case ButtonVariantsEnum.SECONDARY:
+        return css`
+          background: ${({ theme }) => theme.colors.neutral[700]};
         `
     }
   }}
@@ -46,7 +49,13 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   }}
 
   &:hover:not(:disabled) {
+    cursor: pointer;
+
     opacity: 0.8;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 
   @media (max-width: 1024px) {

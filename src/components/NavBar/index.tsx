@@ -61,9 +61,8 @@ export default function NavBar(): ReactElement {
             couter={isClient ? user.streakCount : 0}
             icon={<AiFillFire color={theme?.colors.green[500]} />}
           />
-          {/* TODO - Colocar as vidas ceertas */}
           <Counter
-            couter={isClient ? user.streakCount : 0}
+            couter={isClient ? user.lifeCount : 0}
             icon={<FiCoffee color={theme?.colors.green[500]} />}
           />
 

@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import Button from 'components/Button'
 
 import { useAuth } from 'hooks/useAuth'
+import { UserProps } from 'hooks/useAuth/types'
 import { useCourse } from 'hooks/useCourse'
 
 import { api } from 'services/api'
@@ -19,7 +20,7 @@ import { CourseCardProps } from './types'
 export default function CourseCard(props: CourseCardProps): ReactElement {
   const router = useRouter()
 
-  const { user, token } = useAuth()
+  const { user, token, updateUser } = useAuth()
   const { setCourse } = useCourse()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -34,10 +35,17 @@ export default function CourseCard(props: CourseCardProps): ReactElement {
     setIsLoading(true)
 
     api(token)
-      .post(`${user.id}/register/${props.course.id}`)
+      .post(`/user/${user.id}/register/${props.course.id}`)
       .then(() => {
-        router.push(`/courses/${props.course.id}/sections`)
+        const updatedUser: UserProps = {
+          ...user,
+          courseIds: [...user.courseIds, props.course.id],
+        }
+
+        updateUser(updatedUser)
         setCourse(props.course)
+
+        router.push(`/courses/${props.course.id}/sections`)
       })
       .catch(() => {
         toast.error('Erro inesperado. Tente novamente mais tarde')
@@ -70,7 +78,9 @@ export default function CourseCard(props: CourseCardProps): ReactElement {
           isLoading={isLoading}
           disabled={isLoading}
         >
-          Acessar curso
+          {user.courseIds.includes(props.course.id)
+            ? 'Acessar curso'
+            : 'Increver-se no curso'}
         </Button>
       </div>
     </Styles.CourseCardContainer>
