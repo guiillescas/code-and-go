@@ -3,6 +3,7 @@ import { Dispatch, ReactNode, SetStateAction } from 'react'
 interface FriendshipRequestProps {
   id: string
   requesterId: string
+  requesterEmail: string
   message: string
 }
 
@@ -19,13 +20,12 @@ export interface UserProps {
   level: string
   profilePicture: string | null
   streakCount: number
+  lifeCount: number
   visibility: number
 }
 
 export interface LoginRequestProps {
-  userId: string
-  firstName: string
-  email: string
+  user: UserProps
   token: string
 }
 
@@ -39,7 +39,7 @@ export interface AuthContextData {
   setUser: Dispatch<SetStateAction<UserProps>>
   token: string
   setToken: Dispatch<SetStateAction<string>>
-  login: (props: LoginProps) => Promise<void>
+  updateUser: (user: UserProps) => void
   logout: () => void
 }
 

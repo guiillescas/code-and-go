@@ -30,6 +30,7 @@ export interface QuestionProps {
 export interface ModuleProps {
   id: string
   name: string
+  description: string
   totalLessons: number
   moduleType: 'Skill' | 'Test'
 }
