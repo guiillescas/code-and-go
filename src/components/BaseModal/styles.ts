@@ -1,10 +1,9 @@
 import Modal from 'react-modal'
+import styled from 'styled-components'
 
 import { ContainerProps } from './types'
 
-import styled from 'styled-components'
-
-export const Container = styled(Modal) <ContainerProps>`
+export const Container = styled(Modal)<ContainerProps>`
   position: relative;
 
   width: ${({ maxWidth }) => (maxWidth ? '100%' : 'fit-content')};
@@ -19,7 +18,7 @@ export const Container = styled(Modal) <ContainerProps>`
   border-radius: 1rem;
   z-index: 1500;
 
-  @media(max-width: 768px) {
+  @media (max-width: 768px) {
     padding: 1.5rem;
     margin: 0.5rem 1rem;
 
@@ -64,7 +63,7 @@ export const Container = styled(Modal) <ContainerProps>`
   }
 
   .children {
-    padding: 1.5rem;
+    padding: 0.25rem 1.5rem 1rem;
 
     color: ${({ theme }) => theme.colors.neutral[100]};
   }

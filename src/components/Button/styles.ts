@@ -4,7 +4,7 @@ import { ButtonContainerProps, ButtonVariantsEnum } from './types'
 
 export const ButtonContainer = styled.button<ButtonContainerProps>`
   width: 100%;
-  height: 43px;
+  height: 36px;
 
   color: ${({ theme }) => theme.colors.white[500]};
 

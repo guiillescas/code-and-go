@@ -32,6 +32,13 @@ export const CourseCardContainer = styled.div`
 
     > p {
       margin-top: 0.75rem;
+      height: 37px;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     > button {
