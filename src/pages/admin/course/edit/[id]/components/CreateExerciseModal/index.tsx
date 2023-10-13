@@ -160,11 +160,11 @@ export default function CreateExerciseModal(
 
   useEffect(() => {
     api(token)
-      .get(`/category?language=${props.course.language.value}`)
+      .get(`/category?language=${props.course.language?.value}`)
       .then((response) => {
         setCategories(response.data)
       })
-  }, [props.course.language.value, token])
+  }, [props.course, token])
 
   /// ////////////// CODE EDITOR /////////////////////
 

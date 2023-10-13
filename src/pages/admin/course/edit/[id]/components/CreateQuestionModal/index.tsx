@@ -3,9 +3,8 @@ import { ReactElement, useEffect, useState } from 'react'
 import { ButtonVariantsEnum } from '@/components/Button/types'
 import CheckboxInput from '@/components/inputs/CheckboxInput'
 import { yupResolver } from '@hookform/resolvers/yup'
-import courses from 'pages/courses'
 import { useForm } from 'react-hook-form'
-import { FiEdit2, FiTrash } from 'react-icons/fi'
+import { FiTrash } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
@@ -156,11 +155,11 @@ export default function CreateQuestionModal(
 
   useEffect(() => {
     api(token)
-      .get(`/category?language=${props.course.language.value}`)
+      .get(`/category?language=${props.course.language?.value}`)
       .then((response) => {
         setCategories(response.data)
       })
-  }, [props.course.language.value, token])
+  }, [props.course, token])
 
   return (
     <BaseModal
