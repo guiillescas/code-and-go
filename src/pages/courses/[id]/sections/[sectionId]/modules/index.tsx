@@ -39,7 +39,7 @@ interface FormattedModuleProps extends ModuleProps {
 export default function Course(): ReactElement {
   const router = useRouter()
 
-  const { token } = useAuth()
+  const { token, user, updateUser } = useAuth()
   const { course, setCourse } = useCourse()
 
   const [modules, setModules] = useState<FormattedModuleProps[]>([])
@@ -89,8 +89,6 @@ export default function Course(): ReactElement {
   const [language, setLanguage] = useState(languageOptions[0])
 
   const [isSuccess, setIsSuccess] = useState(false)
-
-  console.log({ code })
 
   const enterPress = useKeyPress('Enter')
   const ctrlPress = useKeyPress('Control')
@@ -184,7 +182,7 @@ export default function Course(): ReactElement {
     }
   }
 
-  function handlesendExercise(exerciseIndex: number) {
+  function handleSendExercise(exerciseIndex: number) {
     setIsLoading(true)
 
     const testCaseId = exercises[exerciseIndex].testCases.find(
@@ -238,6 +236,13 @@ export default function Course(): ReactElement {
           toast.success('Resposta correta!')
         } else {
           toast.warning('Resposta incorreta!')
+
+          if (user.lifeCount > 0) {
+            updateUser({
+              ...user,
+              lifeCount: user.lifeCount - 1,
+            })
+          }
         }
       })
       .catch(() => {
@@ -279,7 +284,7 @@ export default function Course(): ReactElement {
   function getQuestions(moduleId: string) {
     if (course) {
       api(token)
-        .get(`/course/${course?.id}/module/${moduleId}/start`)
+        .post(`/lesson/${course?.id}/module/${moduleId}/start`)
         .then((response) => {
           setQuestions(
             response?.data.questions.map((question: QuestionProps) => {
@@ -356,7 +361,7 @@ export default function Course(): ReactElement {
 
                           <Button
                             variant={ButtonVariantsEnum.PRIMARY}
-                            onClick={() => handlesendExercise(index)}
+                            onClick={() => handleSendExercise(index)}
                             isLoading={isLoading}
                           >
                             Enviar exercício

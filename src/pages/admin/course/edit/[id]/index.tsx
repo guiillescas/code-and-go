@@ -139,11 +139,13 @@ export default function AdminCourse(): ReactElement {
             onRequestClose={() => setIsCreateQuestionModalOpen(false)}
           />
         )}
-        <CreateExerciseModal
-          courseId={courseId}
-          isOpen={isCreateExerciseModalOpen}
-          onRequestClose={() => setIsCreateExerciseModalOpen(false)}
-        />
+        {course && (
+          <CreateExerciseModal
+            course={course}
+            isOpen={isCreateExerciseModalOpen}
+            onRequestClose={() => setIsCreateExerciseModalOpen(false)}
+          />
+        )}
       </Styles.AdminCourseContainer>
     </AdminLayout>
   )

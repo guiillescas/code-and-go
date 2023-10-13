@@ -49,7 +49,7 @@ export const Container = styled.div<IContainerProps>`
     height: 14px;
     margin-top: 0.25rem;
     color: ${({ theme, error }) =>
-      error ? theme.colors.primary[500] : 'transparent'};
+      error ? theme.colors.error[500] : 'transparent'};
 
     transition: color 0.1s;
   }

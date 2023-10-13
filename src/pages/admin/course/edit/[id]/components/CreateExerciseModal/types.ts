@@ -1,5 +1,7 @@
+import { CourseProps } from 'hooks/useCourse/types'
+
 export interface CreateExerciseModalProps {
-  courseId: string
+  course: CourseProps
   isOpen: boolean
   onRequestClose: () => void
 }

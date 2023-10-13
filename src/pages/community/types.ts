@@ -3,12 +3,11 @@ export interface FormProps {
 }
 
 export interface PossibleFriendsProps {
-  email: string
-  firstName: string
   id: string
+  firstName: string
   lastName: string
   profilePicture: null | string
-  role: string
+  visibility: number
 }
 
 export interface PossibleFriendsListProps extends PossibleFriendsProps {

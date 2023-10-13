@@ -58,6 +58,10 @@ export const CommunityContainer = styled.div`
           align-items: center;
           justify-content: center;
 
+          > span {
+            margin-right: 1rem;
+          }
+
           > a {
             margin-left: 1rem;
 

@@ -180,9 +180,16 @@ export default function Community(): ReactElement {
                       <strong>{index + 1}</strong>
                     </span>
 
-                    <Link href={`/profile/${possibleFriend.id}`}>
-                      {possibleFriend.firstName} {possibleFriend.lastName}
-                    </Link>
+                    {possibleFriend.visibility === 1 ? (
+                      <Link href={`/profile/${possibleFriend.id}`}>
+                        {possibleFriend.firstName} {possibleFriend.lastName}
+                      </Link>
+                    ) : (
+                      <p>
+                        {possibleFriend.firstName} {possibleFriend.lastName}{' '}
+                        (Perfil privado)
+                      </p>
+                    )}
                   </div>
 
                   <Button

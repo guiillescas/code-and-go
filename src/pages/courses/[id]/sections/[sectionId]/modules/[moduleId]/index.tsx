@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { FormEvent, ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
 import {
   CourseProps,
@@ -7,7 +7,6 @@ import {
   QuestionProps,
 } from '@/hooks/useCourse/types'
 import axios from 'axios'
-import { title } from 'process'
 import { toast } from 'react-toastify'
 import useKeyPress from 'utils/useKeyPress'
 
@@ -36,7 +35,7 @@ const javascriptDefault = `// Escreva o código aqui`
 export default function Module(): ReactElement {
   const router = useRouter()
 
-  const { token } = useAuth()
+  const { token, user, updateUser } = useAuth()
 
   const { course, selectedModuule, setCourse, setBreadcrumb } = useCourse()
 
@@ -160,7 +159,7 @@ export default function Module(): ReactElement {
 
   // }
 
-  function handlesendExercise(exerciseIndex: number) {
+  function handleSendExercise(exerciseIndex: number) {
     setIsLoading(true)
 
     const testCaseId = exercises[exerciseIndex].testCases.find(
@@ -214,6 +213,13 @@ export default function Module(): ReactElement {
           toast.success('Resposta correta!')
         } else {
           toast.warning('Resposta incorreta!')
+
+          if (user.lifeCount > 0) {
+            updateUser({
+              ...user,
+              lifeCount: user.lifeCount - 1,
+            })
+          }
         }
       })
       .catch(() => {
@@ -335,7 +341,7 @@ export default function Module(): ReactElement {
 
                 <Button
                   variant={ButtonVariantsEnum.PRIMARY}
-                  onClick={() => handlesendExercise(index)}
+                  onClick={() => handleSendExercise(index)}
                   isLoading={isLoading}
                 >
                   Enviar exercício

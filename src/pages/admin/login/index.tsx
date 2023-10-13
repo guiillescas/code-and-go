@@ -4,18 +4,23 @@ import { useRouter } from 'next/router'
 import { ReactElement, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
+import axios, { AxiosError } from 'axios'
 import { GetServerSidePropsContext } from 'next'
-import { signIn } from 'next-auth/react'
-import { destroyCookie, parseCookies } from 'nookies'
+import nookies, { destroyCookie, parseCookies } from 'nookies'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import Button from 'components/Button'
 import Input from 'components/inputs/input'
 
+import { cookies as cookiesNames } from 'constants/cookies'
 import { validationMessages } from 'constants/validationMessages'
 
 import { useAuth } from 'hooks/useAuth'
+import { LoginRequestProps } from 'hooks/useAuth/types'
+
+import { api } from 'services/api'
 
 import * as Styles from './styles'
 
@@ -30,7 +35,8 @@ const loginSchema = Yup.object().shape({
 
 export default function Login(props: LoginPageProps): ReactElement {
   const router = useRouter()
-  const { login } = useAuth()
+
+  const { setUser, setToken } = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -45,12 +51,41 @@ export default function Login(props: LoginPageProps): ReactElement {
   async function handleLogin(data: FormProps) {
     setIsLoading(true)
 
-    await login(data)
-      .then(() => {
+    api()
+      .post<LoginRequestProps>('/auth/login', {
+        email: data.email,
+        password: data.password,
+      })
+      .then((response) => {
+        axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`
+
+        setUser(response.data.user)
+        setToken(response.data.token)
+
+        nookies.set(
+          undefined,
+          cookiesNames.user,
+          JSON.stringify(response.data.user),
+          {
+            maxAge: 30 * 24 * 60 * 60,
+            path: '/',
+          },
+        )
+        nookies.set(undefined, cookiesNames.token, `${response.data.token}`, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+        })
+
         router.push('/')
       })
-      .catch(() => {
-        console.log('Error')
+      .catch((error: AxiosError) => {
+        if (error.response?.status === 400) {
+          toast.warning('E-mail ou senha inválidos')
+
+          return
+        }
+
+        toast.error('Erro inesperado. Tente novamente mais tarde!')
       })
       .finally(() => {
         setIsLoading(false)
