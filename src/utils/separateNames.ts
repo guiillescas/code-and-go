@@ -1,4 +1,4 @@
-export function separarNames(name: string): {
+export function separateNames(name: string): {
   firstName: string
   lastName: string
 } {
@@ -7,7 +7,7 @@ export function separarNames(name: string): {
   const quantityOfNames = splitedNames.length
 
   const firstName = splitedNames[0]
-  const lastName = quantityOfNames > 1 ? name[name.length - 1] : ''
+  const lastName = splitedNames.slice(-(quantityOfNames - 1)).join(' ')
 
   return { firstName, lastName }
 }
