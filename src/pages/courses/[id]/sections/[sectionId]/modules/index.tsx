@@ -401,7 +401,6 @@ export default function Course(): ReactElement {
             })}
           </div>
         </section>
-
         <ExerciseFeedbackModal
           isOpen={isExerciseFeedbackModalOpen}
           onRequestClose={() => setIsExerciseFeedbackModalOpen(false)}
