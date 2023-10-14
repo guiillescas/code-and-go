@@ -122,23 +122,6 @@ export default function Login(props: LoginPageProps): ReactElement {
           </Button>
         </form>
 
-        <div className="or">
-          <span></span>
-          <p>ou</p>
-          <span></span>
-        </div>
-
-        <div className="social-medias-buttons">
-          <button type="button" onClick={() => signIn()}>
-            <Image
-              src="/google-logo.png"
-              alt="Logo do Google"
-              width={24}
-              height={24}
-            />
-          </button>
-        </div>
-
         <div className="register-wrapper">
           <p>
             Não tem uma conta? <Link href="/register">Cadastre-se</Link>

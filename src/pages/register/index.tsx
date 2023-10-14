@@ -95,6 +95,8 @@ export default function Login(): ReactElement {
       <div>
         <h1>Registre-se</h1>
 
+        <Link href="/login">Voltar</Link>
+
         <form onSubmit={handleSubmit(handleRegister)}>
           <Input
             register={register}
@@ -125,37 +127,10 @@ export default function Login(): ReactElement {
             }
           />
 
-          <div className="recover-password">
-            <Link href="/recover-password">Recuperar senha</Link>
-          </div>
-
           <Button isLoading={isLoading} type="submit">
             Fazer registro
           </Button>
         </form>
-
-        <div className="or">
-          <span></span>
-          <p>ou</p>
-          <span></span>
-        </div>
-
-        <div className="social-medias-buttons">
-          <button type="button" onClick={() => signIn()}>
-            <Image
-              src="/google-logo.png"
-              alt="Logo do Google"
-              width={24}
-              height={24}
-            />
-          </button>
-        </div>
-
-        <div className="register-wrapper">
-          <p>
-            Não tem uma conta? <Link href="/register">Cadastre-se</Link>
-          </p>
-        </div>
       </div>
     </Styles.LoginContainer>
   )
