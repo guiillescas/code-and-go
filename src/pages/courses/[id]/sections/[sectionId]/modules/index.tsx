@@ -7,7 +7,7 @@ import { ButtonVariantsEnum } from '@/components/Button/types'
 import CodeEditorWindow from '@/components/CodeEditor'
 import ExerciseFeedbackModal from '@/components/ExerciseFeedbackModal'
 import { languageOptions } from '@/constants/languageOptions'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import useKeyPress from 'utils/useKeyPress'
 
@@ -43,6 +43,7 @@ export default function Course(): ReactElement {
   const { course, setCourse } = useCourse()
 
   const [modules, setModules] = useState<FormattedModuleProps[]>([])
+  const [lessonId, setLessonId] = useState('')
 
   useEffect(() => {
     api(token)
@@ -182,32 +183,31 @@ export default function Course(): ReactElement {
     }
   }
 
+  // SUBMIT EXERCISE AND LESSON
+
   function handleSendExercise(exerciseIndex: number) {
     setIsLoading(true)
 
-    const testCaseId = exercises[exerciseIndex].testCases.find(
-      (testCase) => testCase.id,
-    )?.id
+    exercises[exerciseIndex].testCases.forEach((testCase) => {
+      api(token)
+        .put(`/lesson/${lessonId}/resolve/exercise`, {
+          exerciseId: exercises[exerciseIndex].id,
+          testCaseId: testCase.id,
+          solutionCode: code,
+        })
+        .then((response) => {
+          if (response.data.message === 'Sucesso no Teste') {
+            toast.success('Resposta correta!')
+          } else {
+            toast.warning('Resposta incorreta!')
+          }
+        })
+        .catch(() => {
+          toast.error('Erro inesperado ao enviar exercício')
+        })
+    })
 
-    console.log(testCaseId)
-
-    api(token)
-      .post(`/exercise/${exercises[exerciseIndex].id}/resolve/${testCaseId}`, {
-        solutionCode: code,
-      })
-      .then((response) => {
-        if (response.data.message === 'Sucesso no Teste') {
-          toast.success('Resposta correta!')
-        } else {
-          toast.warning('Resposta incorreta!')
-        }
-      })
-      .catch(() => {
-        toast.error('Erro inesperado ao enviar exercício')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    setIsLoading(false)
   }
 
   function handleUpdateQuestion(questionIndex: number) {
@@ -229,8 +229,18 @@ export default function Course(): ReactElement {
       (alternative) => alternative.selected,
     )?.id
 
+    if (!alternativeId) {
+      toast.warning('Marque uma opção para enviar a questão')
+      setIsLoading(false)
+
+      return
+    }
+
     api(token)
-      .post(`/question/${questions[questionIndex].id}/resolve/${alternativeId}`)
+      .put(`/lesson/${lessonId}/resolve/question`, {
+        questionId: questions[questionIndex].id,
+        alternativeId,
+      })
       .then((response) => {
         if (response.data.isCorrect) {
           toast.success('Resposta correta!')
@@ -245,7 +255,13 @@ export default function Course(): ReactElement {
           }
         }
       })
-      .catch(() => {
+      .catch((error: AxiosError) => {
+        if (error.response?.status === 400) {
+          toast.error('Você não pode mandar um exercício duas ou mais vezes.')
+
+          return
+        }
+
         toast.error('Erro inesperado ao enviar exercício')
       })
       .finally(() => {
@@ -286,6 +302,7 @@ export default function Course(): ReactElement {
       api(token)
         .post(`/lesson/${course?.id}/module/${moduleId}/start`)
         .then((response) => {
+          setLessonId(response.data.lessonId)
           setQuestions(
             response?.data.questions.map((question: QuestionProps) => {
               return {
