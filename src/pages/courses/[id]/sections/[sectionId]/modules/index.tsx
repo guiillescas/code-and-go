@@ -1,17 +1,15 @@
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 
-import Accordion from '@/components/Accordion'
-import Button from '@/components/Button'
-import { ButtonVariantsEnum } from '@/components/Button/types'
-import CodeEditorWindow from '@/components/CodeEditor'
-import ExerciseFeedbackModal from '@/components/ExerciseFeedbackModal'
-import { languageOptions } from '@/constants/languageOptions'
 import axios, { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import useKeyPress from 'utils/useKeyPress'
 
-import Question from './[moduleId]/components/Question'
+import ModuleModal from './components/ModuleModal'
+import Button from 'components/Button'
+import ExerciseFeedbackModal from 'components/ExerciseFeedbackModal'
+
+import { languageOptions } from 'constants/languageOptions'
 
 import { useAuth } from 'hooks/useAuth'
 import { useCourse } from 'hooks/useCourse'
@@ -30,10 +28,8 @@ import { defineTheme } from 'lib/defineTheme'
 
 import * as Styles from './styles'
 
-import { CustomQuestionProps } from './[moduleId]/types'
-
-interface FormattedModuleProps extends ModuleProps {
-  isAccordionOpen: boolean
+export interface FormattedModuleProps extends ModuleProps {
+  moduleSequence: string | null
 }
 
 export default function Course(): ReactElement {
@@ -44,6 +40,11 @@ export default function Course(): ReactElement {
 
   const [modules, setModules] = useState<FormattedModuleProps[]>([])
   const [lessonId, setLessonId] = useState('')
+
+  const [isLessonStartLoading, setIsLessonStartLoading] = useState(false)
+  const [isModuleModalOpen, setIsModuleModalOpen] = useState(false)
+  const [selectedModule, setSelectedModule] =
+    useState<FormattedModuleProps | null>(null)
 
   useEffect(() => {
     api(token)
@@ -66,7 +67,7 @@ export default function Course(): ReactElement {
     const formattedModules = section?.modules.map((module) => {
       return {
         ...module,
-        isAccordionOpen: false,
+        moduleSequence: null,
       }
     })
 
@@ -77,19 +78,21 @@ export default function Course(): ReactElement {
 
   // ================= MOVED AFTER ======================
 
+  const [isSuccess, setIsSuccess] = useState(false)
+
   const [isLoading, setIsLoading] = useState(false)
 
   const [isExerciseFeedbackModalOpen, setIsExerciseFeedbackModalOpen] =
     useState(false)
 
-  const [questions, setQuestions] = useState<CustomQuestionProps[]>([])
+  /// ///////////// CODE EDITOR /////
+
+  const [questions, setQuestions] = useState<any[]>([])
   const [exercises, setExercises] = useState<ExerciseProps[]>([])
 
   const [code, setCode] = useState(`// Escreva o código aqui`)
   const [theme, setTheme] = useState('GitHub')
   const [language, setLanguage] = useState(languageOptions[0])
-
-  const [isSuccess, setIsSuccess] = useState(false)
 
   const enterPress = useKeyPress('Enter')
   const ctrlPress = useKeyPress('Control')
@@ -210,65 +213,6 @@ export default function Course(): ReactElement {
     setIsLoading(false)
   }
 
-  function handleUpdateQuestion(questionIndex: number) {
-    setIsLoading(true)
-
-    // setTimeout(() => {
-    //   if (alternativeId === '2f3b6478-717f-4f47-a0a8-841812653db7') {
-    //     setIsExerciseFeedbackModalOpen(true)
-    //     setIsSuccess(true)
-    //   } else {
-    //     setIsExerciseFeedbackModalOpen(true)
-    //     setIsSuccess(false)
-    //   }
-
-    //   setIsLoading(false)
-    // }, 600)
-
-    const alternativeId = questions[questionIndex].alternatives.find(
-      (alternative) => alternative.selected,
-    )?.id
-
-    if (!alternativeId) {
-      toast.warning('Marque uma opção para enviar a questão')
-      setIsLoading(false)
-
-      return
-    }
-
-    api(token)
-      .put(`/lesson/${lessonId}/resolve/question`, {
-        questionId: questions[questionIndex].id,
-        alternativeId,
-      })
-      .then((response) => {
-        if (response.data.isCorrect) {
-          toast.success('Resposta correta!')
-        } else {
-          toast.warning('Resposta incorreta!')
-
-          if (user.lifeCount > 0) {
-            updateUser({
-              ...user,
-              lifeCount: user.lifeCount - 1,
-            })
-          }
-        }
-      })
-      .catch((error: AxiosError) => {
-        if (error.response?.status === 400) {
-          toast.error('Você não pode mandar um exercício duas ou mais vezes.')
-
-          return
-        }
-
-        toast.error('Erro inesperado ao enviar exercício')
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }
-
   useEffect(() => {
     defineTheme('GitHub').then((_) => setTheme('GitHub'))
   }, [])
@@ -297,12 +241,23 @@ export default function Course(): ReactElement {
     }
   }, [router.query.id, setCourse, token])
 
-  function getQuestions(moduleId: string) {
+  // Substituida pela função "handleStartModule", logo abaixo
+  // function getQuestions(moduleId: string) {
+
+  // }
+
+  function handleStartModule(
+    module: FormattedModuleProps,
+    moduleSequence: string,
+  ) {
+    setIsLessonStartLoading(true)
+
     if (course) {
       api(token)
-        .post(`/lesson/${course?.id}/module/${moduleId}/start`)
+        .post(`/lesson/${course?.id}/module/${module.id}/start`)
         .then((response) => {
           setLessonId(response.data.lessonId)
+
           setQuestions(
             response?.data.questions.map((question: QuestionProps) => {
               return {
@@ -317,6 +272,15 @@ export default function Course(): ReactElement {
             }),
           )
           setExercises(response?.data.exercises)
+
+          setSelectedModule({
+            ...module,
+            moduleSequence,
+          })
+          setIsModuleModalOpen(true)
+        })
+        .finally(() => {
+          setIsLessonStartLoading(false)
         })
     }
   }
@@ -334,78 +298,37 @@ export default function Course(): ReactElement {
               const formattedIndex = `0${index + 1}`.slice(-2)
 
               return (
-                <Accordion
-                  key={module.id}
-                  title={`${formattedIndex} - ${module.name}`}
-                  isOpen={module.isAccordionOpen}
-                  onAccordionOpen={() => getQuestions(module.id)}
-                >
-                  <div className="questions">
-                    {questions?.length > 0 &&
-                      questions?.map((question, index) => {
-                        return (
-                          <div className="question" key={question.id}>
-                            <Question
-                              title={question.title}
-                              alternatives={question.alternatives}
-                              setQuestions={setQuestions}
-                            />
+                <Styles.ModuleCard key={module.id}>
+                  <p>Módulo {formattedIndex}</p>
 
-                            <Button
-                              variant={ButtonVariantsEnum.PRIMARY}
-                              onClick={() => handleUpdateQuestion(index)}
-                              isLoading={isLoading}
-                            >
-                              Enviar questão
-                            </Button>
-                          </div>
-                        )
-                      })}
-
-                    {exercises?.length > 0 &&
-                      exercises.map((exercise, index) => (
-                        <div className="exercise" key={exercise.id}>
-                          <div className="ecercise-wrapper">
-                            <p>{exercise.description}</p>
-
-                            <CodeEditorWindow
-                              code={code}
-                              onChange={onChange}
-                              language={language?.value}
-                              theme={theme}
-                            />
-                          </div>
-
-                          <Button
-                            variant={ButtonVariantsEnum.PRIMARY}
-                            onClick={() => handleSendExercise(index)}
-                            isLoading={isLoading}
-                          >
-                            Enviar exercício
-                          </Button>
-                        </div>
-                      ))}
-
-                    <div className="footer">
-                      {/* <Button
-                      variant={ButtonVariantsEnum.PRIMARY}
-                      onClick={() => handleFinishModule()}
-                      isLoading={isLoading}
-                    >
-                      Enviar
-                    </Button> */}
-                    </div>
-                  </div>
-                </Accordion>
+                  <Button
+                    onClick={() => handleStartModule(module, formattedIndex)}
+                  >
+                    Iniciar módulo
+                  </Button>
+                </Styles.ModuleCard>
               )
             })}
           </div>
         </section>
+
         <ExerciseFeedbackModal
           isOpen={isExerciseFeedbackModalOpen}
           onRequestClose={() => setIsExerciseFeedbackModalOpen(false)}
           isSuccess={isSuccess}
         />
+
+        {selectedModule && (
+          <ModuleModal
+            isOpen={isModuleModalOpen}
+            onRequestClose={() => setIsModuleModalOpen(false)}
+            module={selectedModule}
+            setQuestions={setQuestions}
+            questions={questions}
+            exercises={exercises}
+            lessonId={lessonId}
+          />
+        )}
       </Styles.CourseContainer>
     </AppLayout>
   )

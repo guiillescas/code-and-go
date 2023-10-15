@@ -1,12 +1,15 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react'
 
-export interface BaseModalProps {
+export interface BasicModalProps {
   isOpen: boolean
   onRequestClose: () => void
   title?: string
-  children: ReactNode
   maxWidth?: number | string
   maxHeight?: number | string
+}
+
+export interface BaseModalProps extends BasicModalProps {
+  children: ReactNode
 }
 
 export interface ContainerProps {

@@ -36,6 +36,7 @@ export default function AdminCourse(): ReactElement {
   const [selectedSection, setSelectedSection] = useState<SectionProps>()
 
   const [course, setCourse] = useState<CourseProps>()
+  const [sections, setSections] = useState<SectionProps[]>([])
 
   function handleCreateSection() {
     setIsCreateSectionModalOpen(true)
@@ -55,6 +56,7 @@ export default function AdminCourse(): ReactElement {
         )
 
         setCourse(currentCourse)
+        setSections(currentCourse.sections)
       })
   }, [courseId, token])
 
@@ -103,7 +105,7 @@ export default function AdminCourse(): ReactElement {
               <th>Ações</th>
             </tr>
 
-            {course?.sections.map((section, index) => (
+            {sections.map((section, index) => (
               <tr key={section.id} className="section">
                 <td>{index + 1}</td>
                 <td>{section.name}</td>
@@ -126,6 +128,7 @@ export default function AdminCourse(): ReactElement {
           courseId={courseId}
           isOpen={isCreateSectionModalOpen}
           onRequestClose={() => setIsCreateSectionModalOpen(false)}
+          setSections={setSections}
         />
         <EditSectionModal
           isOpen={isEditSectionModalOpen}

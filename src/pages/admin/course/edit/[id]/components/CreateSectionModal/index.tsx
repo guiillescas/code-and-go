@@ -1,8 +1,10 @@
-import { ReactElement } from 'react'
+import { useRouter } from 'next/router'
+import { ReactElement, useState } from 'react'
 
 import Button from '@/components/Button'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import BaseModal from 'components/BaseModal'
@@ -28,18 +30,44 @@ const createSectionSchema = Yup.object().shape({
 export default function CreateSectionModal(
   props: CreateSectionModalProps,
 ): ReactElement {
+  const router = useRouter()
+
   const { token } = useAuth()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateSectionProps>({
     resolver: yupResolver(createSectionSchema),
   })
 
   function handleCreateSection(data: CreateSectionProps) {
-    api(token).post(``)
+    setIsLoading(true)
+
+    api(token)
+      .post(`/course/${router.query.id}/section`, data)
+      .then((response) => {
+        const totalOfSections = response.data.sections.length
+
+        props.setSections((prevState) => {
+          return [...prevState, response.data.sections[totalOfSections - 1]]
+        })
+        toast.success('Seção criada com sucesso')
+      })
+      .catch(() => {
+        toast.error(
+          'Erro inesperado ao criar seção. Tente novamente mais tarde',
+        )
+      })
+      .finally(() => {
+        setIsLoading(false)
+        props.onRequestClose()
+        reset()
+      })
   }
 
   return (
@@ -65,7 +93,9 @@ export default function CreateSectionModal(
             error={errors.description && errors.description.message}
           />
 
-          <Button type="submit">Criar seção</Button>
+          <Button type="submit" isLoading={isLoading}>
+            Criar seção
+          </Button>
         </form>
       </Styles.CreateSectionModalContainer>
     </BaseModal>

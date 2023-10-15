@@ -34,7 +34,9 @@ export const CourseContainer = styled.main`
       }
 
       .exercise {
-        .ecercise-wrapper {
+        .exercise-wrapper {
+          margin-bottom: 1rem;
+
           > p {
             margin-bottom: 1rem;
             font-weight: 700;
@@ -46,5 +48,30 @@ export const CourseContainer = styled.main`
         font-size: 1.5rem;
       }
     }
+  }
+`
+
+export const ModuleCard = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  background: ${({ theme }) => theme.colors.neutral[700]};
+
+  border-radius: 6px;
+
+  padding: 1rem;
+
+  > p {
+    font-weight: bold;
+    font-size: 1.125rem;
+  }
+
+  > button {
+    width: fit-content;
+
+    padding: 0 1rem;
   }
 `

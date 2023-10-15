@@ -1,10 +1,11 @@
 import { ReactElement } from 'react'
 
-import { BaseModalProps } from './types'
+import { primary } from '@/styles/fonts'
+import { FiX } from 'react-icons/fi'
 
 import * as Styles from './styles'
-import { FiX } from 'react-icons/fi'
-import { primary } from '@/styles/fonts'
+
+import { BaseModalProps } from './types'
 
 const BaseModal = (props: BaseModalProps): ReactElement => {
   return (
