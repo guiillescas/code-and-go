@@ -234,27 +234,6 @@ export default function Community(): ReactElement {
               <p>Você não tem nenhum pedido de amizade pendente.</p>
             )}
           </div>
-
-          <div className="right">
-            <h2>Ranking</h2>
-
-            <div className="ranking">
-              <Styles.RankingPosition>
-                <span>
-                  <strong>1º</strong>
-                </span>
-                <div className="image-wrapper">
-                  <Image
-                    src="/ts.png"
-                    alt={`Imagem de `}
-                    width={50}
-                    height={50}
-                  />
-                </div>
-                <p>Guilherme</p>
-              </Styles.RankingPosition>
-            </div>
-          </div>
         </section>
       </Styles.CommunityContainer>
     </AppLayout>

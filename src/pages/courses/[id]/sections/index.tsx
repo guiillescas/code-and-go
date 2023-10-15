@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
-import { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
-import AppLayout from 'layouts/AppLayout'
+import { toast } from 'react-toastify'
 
 import ModuleCard from 'components/InlineCard'
 
@@ -11,13 +11,33 @@ import { CourseProps } from 'hooks/useCourse/types'
 
 import { api } from 'services/api'
 
+import AppLayout from 'layouts/AppLayout'
+
 import * as Styles from './styles'
 
+interface RankingProgressesProps {
+  id: string
+  userId: string
+  userFullName: string
+  points: number
+}
+
+interface RankingProps {
+  id: string
+  period: {
+    initialDateTime: string
+    endDateTime: string
+  }
+  rankingProgresses: RankingProgressesProps[]
+}
+
 export default function Course(): ReactElement {
-  const { token, user } = useAuth()
+  const { token } = useAuth()
   const { course, setCourse } = useCourse()
 
   const router = useRouter()
+
+  const [ranking, setRanking] = useState<RankingProgressesProps[]>([])
 
   function handleOnClickCard(sectionId: string) {
     router.push(`/courses/${course?.id}/sections/${sectionId}/modules`)
@@ -34,6 +54,17 @@ export default function Course(): ReactElement {
         setCourse(course[0])
       })
   }, [router.query.id, setCourse, token])
+
+  useEffect(() => {
+    api(token)
+      .get(`/ranking/${router.query.id}`)
+      .then((response) => {
+        setRanking(response.data.rankingProgresses)
+      })
+      .catch(() => {
+        toast.error('Erro inesperado ao carregar o ranking')
+      })
+  }, [router.query.id, token])
 
   return (
     <AppLayout>
@@ -54,6 +85,23 @@ export default function Course(): ReactElement {
             ))}
           </div>
         </section>
+
+        {ranking.length > 0 && (
+          <div className="ranking-wrapper">
+            <h2>Ranking</h2>
+            {ranking.map((rank, index) => (
+              <div className="ranking" key={rank.id}>
+                <Styles.RankingPosition>
+                  <span>
+                    <strong>{index + 1}º</strong>
+                  </span>
+
+                  <p>{rank.userFullName}</p>
+                </Styles.RankingPosition>
+              </div>
+            ))}
+          </div>
+        )}
       </Styles.CourseContainer>
     </AppLayout>
   )

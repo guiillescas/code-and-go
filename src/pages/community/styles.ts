@@ -104,27 +104,6 @@ export const CommunityContainer = styled.div`
           margin-top: 1.5rem;
         }
       }
-      &.right {
-      }
-    }
-  }
-`
-
-export const RankingPosition = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-
-  .image-wrapper {
-    width: 50px;
-    height: 50px;
-
-    border-radius: 50%;
-
-    img {
-      border-radius: 50%;
-      object-fit: contain;
     }
   }
 `

@@ -303,6 +303,7 @@ export default function Course(): ReactElement {
 
                   <Button
                     onClick={() => handleStartModule(module, formattedIndex)}
+                    disabled={user.lifeCount <= 0}
                   >
                     Iniciar módulo
                   </Button>

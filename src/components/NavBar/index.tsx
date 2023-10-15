@@ -12,6 +12,8 @@ import Counter from './components/Counter'
 
 import { useAuth } from 'hooks/useAuth'
 
+import { api } from 'services/api'
+
 import * as Styles from './styles'
 
 const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
@@ -20,7 +22,7 @@ export default function NavBar(): ReactElement {
   const theme = useTheme()
   const router = useRouter()
 
-  const { user, logout } = useAuth()
+  const { user, logout, token, updateUser } = useAuth()
 
   const [isMenuBarVisible, setIsMenuBarVisible] = useState(false)
   const [isClient, setIsClient] = useState(false)
@@ -32,6 +34,15 @@ export default function NavBar(): ReactElement {
   useEffect(() => {
     setIsClient(true)
   }, [])
+
+  useEffect(() => {
+    api(token)
+      .get(`/user/${user.id}`)
+      .then((response) => {
+        console.log(response.data)
+        updateUser(response.data)
+      })
+  }, [router.asPath])
 
   return (
     <Styles.NavBarContainer>
