@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { AxiosError } from 'axios'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
+import { FiArrowLeft } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import { separateNames } from 'utils/separateNames'
 import * as Yup from 'yup'
@@ -95,7 +96,10 @@ export default function Login(): ReactElement {
       <div>
         <h1>Registre-se</h1>
 
-        <Link href="/login">Voltar</Link>
+        <Link href="/login">
+          <FiArrowLeft />
+          Voltar para login
+        </Link>
 
         <form onSubmit={handleSubmit(handleRegister)}>
           <Input

@@ -36,6 +36,8 @@ export const CourseContainer = styled.main`
   }
 
   .ranking-wrapper {
+    min-width: 200px;
+
     > h2 {
       margin-bottom: 1rem;
     }
@@ -53,6 +55,14 @@ export const RankingPosition = styled.div`
   padding: 1rem;
 
   border-radius: 6px;
+
+  p {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .image-wrapper {
     width: 50px;

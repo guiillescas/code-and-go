@@ -22,6 +22,18 @@ export const LoginContainer = styled.main`
       margin-bottom: 1.5rem;
     }
 
+    > a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      color: ${({ theme }) => theme.colors.white[500]};
+
+      svg {
+        margin-right: 0.25rem;
+      }
+    }
+
     form {
       display: flex;
       flex-direction: column;
@@ -29,6 +41,8 @@ export const LoginContainer = styled.main`
       justify-content: flex-start;
 
       min-width: 450px;
+
+      margin-top: 1rem;
 
       .recover-password {
         display: flex;

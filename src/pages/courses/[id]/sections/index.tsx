@@ -56,15 +56,17 @@ export default function Course(): ReactElement {
   }, [router.query.id, setCourse, token])
 
   useEffect(() => {
-    api(token)
-      .get(`/ranking/${router.query.id}`)
-      .then((response) => {
-        setRanking(response.data.rankingProgresses)
-      })
-      .catch(() => {
-        toast.error('Erro inesperado ao carregar o ranking')
-      })
-  }, [router.query.id, token])
+    if (course) {
+      api(token)
+        .get(`/ranking/${course.id}`)
+        .then((response) => {
+          setRanking(response.data.rankingProgresses)
+        })
+        .catch(() => {
+          toast.error('Erro inesperado ao carregar o ranking')
+        })
+    }
+  }, [router.query.id, token, course])
 
   return (
     <AppLayout>
