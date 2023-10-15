@@ -260,7 +260,7 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
     <BaseModal
       isOpen={props.isOpen}
       onRequestClose={onRequestClose}
-      title={`Módulo ${props.module.moduleSequence}`}
+      title={`Módulo ${props.module && props.module.moduleSequence}`}
       maxWidth={750}
     >
       <Styles.ModuleModalContainer>
