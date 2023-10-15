@@ -119,6 +119,12 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
     exercise: ExerciseProps,
     indexOfCurrentStep: number,
   ) {
+    if (code.length <= 0) {
+      toast.warning('Você não pode mandar o exercício vazio')
+
+      return
+    }
+
     setIsLoading(true)
 
     const exerciseIndex = props.exercises.findIndex(
@@ -138,6 +144,8 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
           } else {
             toast.warning('Resposta incorreta!')
           }
+
+          setCode('')
 
           nextStep(indexOfCurrentStep)
         })
@@ -187,8 +195,6 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
           }
         }
 
-        console.log(isQuestionComplete)
-
         if (
           isQuestionComplete &&
           index - currentIndexOfQuestion <= totalOfExercises - 1
@@ -223,6 +229,14 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
     api(token)
       .put(`/lesson/${props.lessonId}/finish`)
       .then((response) => {
+        const indexOfCurrentModule = props.modules.findIndex(
+          (currentModule) => currentModule.id === props.module.id,
+        )
+
+        props.setIdsOfFinishedModulesAndCurrentModule((prevState) => {
+          return [...prevState, props.modules[indexOfCurrentModule + 1].id]
+        })
+
         if (response.data.isFailed) {
           toast.warning(response.data.message)
         } else {
@@ -241,7 +255,7 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
   }
 
   // ================= CODE EDITOR ====================
-  const [code, setCode] = useState(`// Escreva o código aqui`)
+  const [code, setCode] = useState(``)
   const [language, setLanguage] = useState(languageOptions[0])
 
   const onCodeChange = (action: any, data: any) => {

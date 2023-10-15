@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ReactElement, useEffect, useState } from 'react'
 
-import { ButtonVariantsEnum } from '@/components/Button/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import nookies from 'nookies'
 import { useForm } from 'react-hook-form'
@@ -10,6 +9,7 @@ import { toast } from 'react-toastify'
 import * as Yup from 'yup'
 
 import Button from 'components/Button'
+import { ButtonVariantsEnum } from 'components/Button/types'
 import Input from 'components/inputs/input'
 import FriendshipRequestCard from 'pages/profile/components/FriendshipRequestCard'
 
@@ -39,6 +39,8 @@ export default function Community(): ReactElement {
 
   const [isSearchLoading, setIsSearchLoading] = useState(false)
   const [isFriendRequestLoading, setIsFriendRequestLoading] = useState(false)
+  const [isToShowNotFriendsMessage, setIsToShowNotFriendsMessage] =
+    useState(false)
 
   const [possibleFriends, setPossibleFriends] = useState<
     PossibleFriendsListProps[]
@@ -48,7 +50,7 @@ export default function Community(): ReactElement {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<FormProps>({
     resolver: yupResolver(communitySchema),
   })
@@ -59,14 +61,20 @@ export default function Community(): ReactElement {
     api(token)
       .get(`/user/list?page=1&pagesize=10&name=${data.studentName}`)
       .then((response) => {
-        setPossibleFriends(
-          response.data.data.map((possibleFriend: PossibleFriendsProps) => {
+        const formattedPossibleFriends = response.data.data
+          .map((possibleFriend: PossibleFriendsProps) => {
             return {
               ...possibleFriend,
               isRequested: false,
             }
-          }),
-        )
+          })
+          .filter(
+            (possibleFriend: PossibleFriendsProps) =>
+              possibleFriend.id !== user.id,
+          )
+        setPossibleFriends(formattedPossibleFriends)
+
+        setIsToShowNotFriendsMessage(true)
       })
       .catch(() => {
         toast.error('Erro inesperado. Tente novamente mais tarde.')
@@ -96,6 +104,7 @@ export default function Community(): ReactElement {
             }
           })
         })
+
         toast.success('Pedido de amizade enviado com sucesso!')
       })
       .catch(() => {
@@ -107,6 +116,7 @@ export default function Community(): ReactElement {
   }
 
   function handleCancelSearch() {
+    setIsToShowNotFriendsMessage(false)
     reset()
     setPossibleFriends([])
   }
@@ -143,6 +153,8 @@ export default function Community(): ReactElement {
         )
       })
   }, [setUser, token, user.id])
+
+  console.log(isToShowNotFriendsMessage)
 
   return (
     <AppLayout>
@@ -208,8 +220,10 @@ export default function Community(): ReactElement {
                   </Button>
                 </div>
               ))
-            ) : (
+            ) : isToShowNotFriendsMessage ? (
               <p>Nenhum amigo encontrado com esse nome</p>
+            ) : (
+              ''
             )}
           </div>
         </section>

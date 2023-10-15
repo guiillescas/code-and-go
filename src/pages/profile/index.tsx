@@ -102,7 +102,7 @@ export default function Profile(): ReactElement {
             <MdOutlineHideImage size={28} />
           )}
 
-          <label htmlFor="upload-photo">Editar</label>
+          {/* <label htmlFor="upload-photo">Editar</label>
           <input
             type="file"
             name="photo"
@@ -110,7 +110,7 @@ export default function Profile(): ReactElement {
             value={profilePhoto}
             onChange={(event) => setProfilePhoto(event.target.value)}
             accept="image/png, image/jpg, image/jpeg"
-          />
+          /> */}
         </div>
 
         <form onSubmit={handleSubmit(updateProfile)}>

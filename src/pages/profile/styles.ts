@@ -24,16 +24,16 @@ export const ProfileContainer = styled.main`
     align-items: center;
     justify-content: center;
 
-    &:hover {
+    /* &:hover {
       background: ${({ theme }) =>
-        `linear-gradient(${theme.colors.neutral[700]} 70%, ${theme.colors.neutral[700]} 50%, #000)`};
+      `linear-gradient(${theme.colors.neutral[700]} 70%, ${theme.colors.neutral[700]} 50%, #000)`};
 
       cursor: pointer;
 
       label {
         opacity: 1;
       }
-    }
+    } */
 
     label {
       display: flex;

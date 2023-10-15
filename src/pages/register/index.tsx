@@ -5,7 +5,6 @@ import { ReactElement, useState } from 'react'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AxiosError } from 'axios'
-import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { FiArrowLeft } from 'react-icons/fi'
 import { toast } from 'react-toastify'

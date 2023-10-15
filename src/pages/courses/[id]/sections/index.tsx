@@ -15,6 +15,8 @@ import AppLayout from 'layouts/AppLayout'
 
 import * as Styles from './styles'
 
+import { ModuleTrackingProps } from './[sectionId]/modules'
+
 interface RankingProgressesProps {
   id: string
   userId: string
@@ -38,6 +40,11 @@ export default function Course(): ReactElement {
   const router = useRouter()
 
   const [ranking, setRanking] = useState<RankingProgressesProps[]>([])
+  const [
+    idsOfFinishedSectionsAndCurrentSection,
+    setIdsOfFinishedSectionsAndCurrentSection,
+  ] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   function handleOnClickCard(sectionId: string) {
     router.push(`/courses/${course?.id}/sections/${sectionId}/modules`)
@@ -68,6 +75,30 @@ export default function Course(): ReactElement {
     }
   }, [router.query.id, token, course])
 
+  useEffect(() => {
+    if (course) {
+      setIsLoading(true)
+
+      api(token)
+        .get(`/progress/${course?.id}`)
+        .then((response) => {
+          // if (!response.data.currentSectionId) {
+
+          // }
+          setIdsOfFinishedSectionsAndCurrentSection([
+            ...response.data.completedSectionIds,
+            response.data.currentSectionId,
+          ])
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
+  }, [course, token])
+
   return (
     <AppLayout>
       <Styles.CourseContainer>
@@ -83,6 +114,9 @@ export default function Course(): ReactElement {
                 name={section.name}
                 description={section.description}
                 handleOnClickCard={() => handleOnClickCard(section.id)}
+                disabled={
+                  !idsOfFinishedSectionsAndCurrentSection.includes(section.id)
+                }
               />
             ))}
           </div>

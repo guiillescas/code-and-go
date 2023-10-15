@@ -6,7 +6,14 @@ import { InlineCardProps } from './types'
 
 export default function InlineCard(props: InlineCardProps): ReactElement {
   return (
-    <Styles.InlineCardContainer onClick={props.handleOnClickCard}>
+    <Styles.InlineCardContainer
+      onClick={() => {
+        if (!props.disabled) {
+          props.handleOnClickCard()
+        }
+      }}
+      disabled={props.disabled}
+    >
       <h3>{props.name}</h3>
 
       <p>{props.description}</p>

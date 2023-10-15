@@ -28,6 +28,19 @@ export const CourseContainer = styled.main`
 
       margin-top: 1rem;
 
+      .loading-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        margin: 1rem auto 0;
+
+        p {
+          margin-top: 1rem;
+        }
+      }
+
       .exercise,
       .question {
         margin: 1rem 0 2rem;

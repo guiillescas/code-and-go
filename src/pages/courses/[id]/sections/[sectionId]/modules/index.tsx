@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router'
 import { ReactElement, useEffect, useState } from 'react'
 
-import axios, { AxiosError } from 'axios'
+import Loading from '@/components/Loading'
+import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useTheme } from 'styled-components'
 import useKeyPress from 'utils/useKeyPress'
 
 import ModuleModal from './components/ModuleModal'
@@ -32,14 +34,29 @@ export interface FormattedModuleProps extends ModuleProps {
   moduleSequence: string | null
 }
 
+export interface ModuleTrackingProps {
+  id: string
+  moduleId: string
+  lessonsCompleted: number
+  status: number
+}
+
 export default function Course(): ReactElement {
   const router = useRouter()
+  const theme = useTheme()
 
-  const { token, user, updateUser } = useAuth()
+  const { token, user } = useAuth()
   const { course, setCourse } = useCourse()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const [modules, setModules] = useState<FormattedModuleProps[]>([])
   const [lessonId, setLessonId] = useState('')
+
+  const [
+    idsOfFinishedModulesAndCurrentModule,
+    setIdsOfFinishedModulesAndCurrentModule,
+  ] = useState<string[]>([])
 
   const [isLessonStartLoading, setIsLessonStartLoading] = useState(false)
   const [isModuleModalOpen, setIsModuleModalOpen] = useState(false)
@@ -80,8 +97,6 @@ export default function Course(): ReactElement {
 
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const [isLoading, setIsLoading] = useState(false)
-
   const [isExerciseFeedbackModalOpen, setIsExerciseFeedbackModalOpen] =
     useState(false)
 
@@ -91,7 +106,6 @@ export default function Course(): ReactElement {
   const [exercises, setExercises] = useState<ExerciseProps[]>([])
 
   const [code, setCode] = useState(`// Escreva o código aqui`)
-  const [theme, setTheme] = useState('GitHub')
   const [language, setLanguage] = useState(languageOptions[0])
 
   const enterPress = useKeyPress('Enter')
@@ -188,33 +202,33 @@ export default function Course(): ReactElement {
 
   // SUBMIT EXERCISE AND LESSON
 
-  function handleSendExercise(exerciseIndex: number) {
-    setIsLoading(true)
+  // function handleSendExercise(exerciseIndex: number) {
+  //   setIsLoading(true)
 
-    exercises[exerciseIndex].testCases.forEach((testCase) => {
-      api(token)
-        .put(`/lesson/${lessonId}/resolve/exercise`, {
-          exerciseId: exercises[exerciseIndex].id,
-          testCaseId: testCase.id,
-          solutionCode: code,
-        })
-        .then((response) => {
-          if (response.data.message === 'Sucesso no Teste') {
-            toast.success('Resposta correta!')
-          } else {
-            toast.warning('Resposta incorreta!')
-          }
-        })
-        .catch(() => {
-          toast.error('Erro inesperado ao enviar exercício')
-        })
-    })
+  //   exercises[exerciseIndex].testCases.forEach((testCase) => {
+  //     api(token)
+  //       .put(`/lesson/${lessonId}/resolve/exercise`, {
+  //         exerciseId: exercises[exerciseIndex].id,
+  //         testCaseId: testCase.id,
+  //         solutionCode: code,
+  //       })
+  //       .then((response) => {
+  //         if (response.data.message === 'Sucesso no Teste') {
+  //           toast.success('Resposta correta!')
+  //         } else {
+  //           toast.warning('Resposta incorreta!')
+  //         }
+  //       })
+  //       .catch(() => {
+  //         toast.error('Erro inesperado ao enviar exercício')
+  //       })
+  //   })
 
-    setIsLoading(false)
-  }
+  //   setIsLoading(false)
+  // }
 
   useEffect(() => {
-    defineTheme('GitHub').then((_) => setTheme('GitHub'))
+    defineTheme('GitHub')
   }, [])
 
   useEffect(() => {
@@ -241,10 +255,33 @@ export default function Course(): ReactElement {
     }
   }, [router.query.id, setCourse, token])
 
-  // Substituida pela função "handleStartModule", logo abaixo
-  // function getQuestions(moduleId: string) {
+  useEffect(() => {
+    if (course) {
+      setIsLoading(true)
 
-  // }
+      api(token)
+        .get(`/progress/${course?.id}`)
+        .then((response) => {
+          const completedModulesIds = response.data.completedModuleId || []
+          const currentModuleIds = response.data.moduleTrackings.map(
+            (moduleTracking: ModuleTrackingProps) => {
+              return moduleTracking.moduleId
+            },
+          )
+
+          setIdsOfFinishedModulesAndCurrentModule([
+            ...completedModulesIds,
+            ...currentModuleIds,
+          ])
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
+  }, [course, token])
 
   function handleStartModule(
     module: FormattedModuleProps,
@@ -294,22 +331,36 @@ export default function Course(): ReactElement {
           <div className="content">
             <h2>Módulos</h2>
 
-            {modules.map((module, index) => {
-              const formattedIndex = `0${index + 1}`.slice(-2)
+            {isLoading ? (
+              <div className="loading-wrapper">
+                <Loading color={theme?.colors.white[500]} />
 
-              return (
-                <Styles.ModuleCard key={module.id}>
-                  <p>Módulo {formattedIndex}</p>
+                <p>Carregando</p>
+              </div>
+            ) : (
+              modules.map((module, index) => {
+                const formattedIndex = `0${index + 1}`.slice(-2)
 
-                  <Button
-                    onClick={() => handleStartModule(module, formattedIndex)}
-                    disabled={user.lifeCount <= 0}
-                  >
-                    Iniciar módulo
-                  </Button>
-                </Styles.ModuleCard>
-              )
-            })}
+                return (
+                  <Styles.ModuleCard key={module.id}>
+                    <p>Módulo {formattedIndex}</p>
+
+                    <Button
+                      onClick={() => handleStartModule(module, formattedIndex)}
+                      disabled={
+                        user.lifeCount <= 0 ||
+                        !idsOfFinishedModulesAndCurrentModule.includes(
+                          module.id,
+                        )
+                      }
+                      isLoading={isLessonStartLoading}
+                    >
+                      Iniciar módulo
+                    </Button>
+                  </Styles.ModuleCard>
+                )
+              })
+            )}
           </div>
         </section>
 
@@ -323,11 +374,15 @@ export default function Course(): ReactElement {
           <ModuleModal
             isOpen={isModuleModalOpen}
             onRequestClose={() => setIsModuleModalOpen(false)}
+            modules={modules}
             module={selectedModule}
             setQuestions={setQuestions}
             questions={questions}
             exercises={exercises}
             lessonId={lessonId}
+            setIdsOfFinishedModulesAndCurrentModule={
+              setIdsOfFinishedModulesAndCurrentModule
+            }
           />
         )}
       </Styles.CourseContainer>

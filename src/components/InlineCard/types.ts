@@ -4,4 +4,5 @@ export interface InlineCardProps {
   name: string
   description: string
   handleOnClickCard: () => void
+  disabled: boolean
 }
