@@ -123,11 +123,11 @@ export default function Community(): ReactElement {
 
   async function handleResponseFriendship(
     response: number,
-    requesterId: string,
+    userId: string,
     requestId: string,
   ) {
     api(token)
-      .post(`/user/${requesterId}/request/${requestId}/response`, {
+      .post(`/user/${userId}/request/${requestId}/response`, {
         response,
       })
       .then((res) => console.log(res))
@@ -153,8 +153,6 @@ export default function Community(): ReactElement {
         )
       })
   }, [setUser, token, user.id])
-
-  console.log(isToShowNotFriendsMessage)
 
   return (
     <AppLayout>
@@ -236,11 +234,10 @@ export default function Community(): ReactElement {
               user.friendshipRequests.map((friendshipRequest) => (
                 <FriendshipRequestCard
                   key={friendshipRequest.id}
-                  id={friendshipRequest.id}
+                  requestId={friendshipRequest.id}
                   message={friendshipRequest.message}
                   name={friendshipRequest.requesterEmail}
                   profilePicture={''}
-                  requesterId={friendshipRequest.requesterId}
                   handleResponseFriendship={handleResponseFriendship}
                 />
               ))

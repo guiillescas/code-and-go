@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { ReactElement } from 'react'
 
+import { useAuth } from '@/hooks/useAuth'
 import { FiCheck, FiUser, FiX } from 'react-icons/fi'
 
 import * as Styles from './styles'
@@ -10,6 +11,8 @@ import { FriendshipRequestCardProps } from './types'
 export default function FriendshipRequestCard(
   props: FriendshipRequestCardProps,
 ): ReactElement {
+  const { user } = useAuth()
+
   return (
     <Styles.FriendshipRequestCardContainer>
       <div>
@@ -34,7 +37,7 @@ export default function FriendshipRequestCard(
           type="button"
           className="confirm"
           onClick={() =>
-            props.handleResponseFriendship(2, props.requesterId, props.id)
+            props.handleResponseFriendship(2, user.id, props.requestId)
           }
         >
           <FiCheck />
@@ -44,7 +47,7 @@ export default function FriendshipRequestCard(
           type="button"
           className="cancel"
           onClick={() =>
-            props.handleResponseFriendship(3, props.requesterId, props.id)
+            props.handleResponseFriendship(3, user.id, props.requestId)
           }
         >
           <FiX />

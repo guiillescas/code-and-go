@@ -1,6 +1,5 @@
 export interface FriendshipRequestCardProps {
-  id: string
-  requesterId: string
+  requestId: string
   message: string
   name: string
   profilePicture: string | null

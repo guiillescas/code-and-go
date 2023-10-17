@@ -42,6 +42,7 @@ export default function CreateCategoryModal(
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateCategoryProps>({
     resolver: yupResolver(createCreateCategorySchema),
@@ -54,6 +55,7 @@ export default function CreateCategoryModal(
       .then(() => {
         toast.success('Categoria criada com sucesso')
 
+        reset()
         props.onRequestClose()
       })
       .catch(() => {

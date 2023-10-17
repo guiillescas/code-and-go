@@ -116,7 +116,7 @@ export default function CreateQuestionModal(
     api(token)
       .post('/question', formattedData)
       .then(() => {
-        toast.success('Categoria criada com sucesso')
+        toast.success('Questão criada com sucesso')
 
         props.onRequestClose()
 
