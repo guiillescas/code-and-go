@@ -7,7 +7,8 @@ export const ProfileContainer = styled.main`
   padding: 2rem 0;
 
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
   gap: 2rem;
 
@@ -35,6 +36,10 @@ export const ProfileContainer = styled.main`
       }
     } */
 
+    img {
+      border-radius: 50%;
+    }
+
     label {
       display: flex;
       align-items: flex-end;
@@ -57,6 +62,30 @@ export const ProfileContainer = styled.main`
       position: absolute;
       z-index: -1;
     }
+  }
+
+  > p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .box {
+    background: ${({ theme }) => theme.colors.neutral[900]};
+
+    border: 3px solid ${({ theme }) => theme.colors.neutral[700]};
+    border-radius: 10px;
+
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    width: fit-content;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
   }
 
   > form {
