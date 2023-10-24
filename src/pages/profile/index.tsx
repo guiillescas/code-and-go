@@ -1,10 +1,12 @@
 import Image from 'next/image'
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 
+import Counter from '@/components/Counter'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetServerSidePropsContext } from 'next'
 import { parseCookies, setCookie } from 'nookies'
 import { useForm } from 'react-hook-form'
+import { FaUserFriends } from 'react-icons/fa'
 import { MdOutlineHideImage } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { separateNames } from 'utils/separateNames'
@@ -40,6 +42,7 @@ export default function Profile(): ReactElement {
 
   const [profilePhoto, setProfilePhoto] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   const {
     register,
@@ -92,12 +95,21 @@ export default function Profile(): ReactElement {
     console.log('a')
   }
 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
     <AppLayout>
       <Styles.ProfileContainer>
         <div className="profile-picture-wrapper">
-          {!user.firstName ? (
-            <Image src="" alt={`Imagem de perfil de ${user.firstName}`} />
+          {user.profilePicture ? (
+            <Image
+              src={user.profilePicture}
+              alt={`Imagem de perfil de ${user.firstName}`}
+              width={200}
+              height={200}
+            />
           ) : (
             <MdOutlineHideImage size={28} />
           )}
@@ -113,9 +125,20 @@ export default function Profile(): ReactElement {
           /> */}
         </div>
 
-        <form onSubmit={handleSubmit(updateProfile)}>
-          <h2>Informações do perfil</h2>
+        <h2>
+          {isClient && user.firstName} {isClient && user.lastName}
+        </h2>
+        <p>
+          <FaUserFriends size={22} /> {user.friendIds?.length} amigo
+          {user.friendIds?.length > 1 ? 's' : ''}
+        </p>
 
+        <div className="box">
+          <Counter counter={isClient ? user.lifeCount : 0} icon="&#x2615;" />
+          <Counter counter={isClient ? user.streakCount : 0} icon="&#x1F525;" />
+        </div>
+
+        <form onSubmit={handleSubmit(updateProfile)}>
           <Input register={register} name="name" label="Nome" />
           <Input register={register} name="email" label="E-mail" type="email" />
           <CheckboxInput

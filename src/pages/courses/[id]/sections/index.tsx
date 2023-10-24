@@ -15,23 +15,7 @@ import AppLayout from 'layouts/AppLayout'
 
 import * as Styles from './styles'
 
-import { ModuleTrackingProps } from './[sectionId]/modules'
-
-interface RankingProgressesProps {
-  id: string
-  userId: string
-  userFullName: string
-  points: number
-}
-
-interface RankingProps {
-  id: string
-  period: {
-    initialDateTime: string
-    endDateTime: string
-  }
-  rankingProgresses: RankingProgressesProps[]
-}
+import { RankingProgressesProps } from './types'
 
 export default function Course(): ReactElement {
   const { token } = useAuth()
@@ -82,9 +66,6 @@ export default function Course(): ReactElement {
       api(token)
         .get(`/progress/${course?.id}`)
         .then((response) => {
-          // if (!response.data.currentSectionId) {
-
-          // }
           setIdsOfFinishedSectionsAndCurrentSection([
             ...response.data.completedSectionIds,
             response.data.currentSectionId,

@@ -43,7 +43,7 @@ export default function Home() {
               {isClient && user.firstName ? `Olá, ${user.firstName}` : 'Olá! '}
             </h1>
 
-            <p>Que bom tê-lo aqui novamente</p>
+            <p>Dê início à sua jornada de aprendizado e conquiste pontos.</p>
           </div>
         </section>
 
