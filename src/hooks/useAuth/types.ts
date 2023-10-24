@@ -4,6 +4,7 @@ interface FriendshipRequestProps {
   id: string
   requesterId: string
   requesterEmail: string
+  requesterPhoto: string
   message: string
 }
 

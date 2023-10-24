@@ -237,7 +237,7 @@ export default function Community(): ReactElement {
                   requestId={friendshipRequest.id}
                   message={friendshipRequest.message}
                   name={friendshipRequest.requesterEmail}
-                  profilePicture={''}
+                  profilePicture={friendshipRequest.requesterPhoto}
                   handleResponseFriendship={handleResponseFriendship}
                 />
               ))
