@@ -102,23 +102,6 @@ export default function Course(): ReactElement {
             ))}
           </div>
         </section>
-
-        {ranking.length > 0 && (
-          <div className="ranking-wrapper">
-            <h2>Ranking</h2>
-            {ranking.map((rank, index) => (
-              <div className="ranking" key={rank.id}>
-                <Styles.RankingPosition>
-                  <span>
-                    <strong>{index + 1}º</strong>
-                  </span>
-
-                  <p>{rank.userFullName}</p>
-                </Styles.RankingPosition>
-              </div>
-            ))}
-          </div>
-        )}
       </Styles.CourseContainer>
     </AppLayout>
   )
