@@ -8,13 +8,13 @@ import { AiFillFire } from 'react-icons/ai'
 import { FiCoffee, FiMenu, FiUser } from 'react-icons/fi'
 import { useTheme } from 'styled-components'
 
-import Counter from './components/Counter'
-
 import { useAuth } from 'hooks/useAuth'
 
 import { api } from 'services/api'
 
 import * as Styles from './styles'
+
+import Counter from '../Counter'
 
 const Font = Boogaloo({ subsets: ['latin'], weight: '400' })
 
@@ -39,7 +39,6 @@ export default function NavBar(): ReactElement {
     api(token)
       .get(`/user/${user.id}`)
       .then((response) => {
-        console.log(response.data)
         updateUser(response.data)
       })
   }, [router.asPath])
@@ -68,14 +67,14 @@ export default function NavBar(): ReactElement {
         </div>
 
         <div className="right-side-wrapper">
-          <Counter
-            couter={isClient ? user.streakCount : 0}
+          {/* <Counter
+            counter={isClient ? user.streakCount : 0}
             icon={<AiFillFire color={theme?.colors.green[500]} />}
           />
           <Counter
-            couter={isClient ? user.lifeCount : 0}
+            counter={isClient ? user.lifeCount : 0}
             icon={<FiCoffee color={theme?.colors.green[500]} />}
-          />
+          /> */}
 
           <div className="profile-picture">
             {user.profilePicture ? (

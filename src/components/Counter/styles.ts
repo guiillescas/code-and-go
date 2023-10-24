@@ -10,7 +10,7 @@ export const CounterContainer = styled.div`
   justify-content: space-between;
   gap: 0.5rem;
 
-  background: ${({ theme }) => theme.colors.neutral[900]};
+  background: ${({ theme }) => theme.colors.neutral[800]};
 
   p {
     font-weight: bold;

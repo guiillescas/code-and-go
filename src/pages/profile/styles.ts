@@ -16,7 +16,7 @@ export const ProfileContainer = styled.main`
 
     width: 150px;
     height: 150px;
-    background: ${({ theme }) => theme.colors.neutral[700]};
+    background: ${({ theme }) => theme.colors.neutral[800]};
 
     border-radius: 50%;
 

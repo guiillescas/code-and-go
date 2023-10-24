@@ -1,12 +1,12 @@
-export const theme = {
+export const kenzo = {
   colors: {
     neutral: {
       100: '#adb5bd',
       300: '#6c757d',
       500: '#495057',
-      700: '#343a40',
+      700: '#212933',
       800: '#181A1D',
-      900: '#212529',
+      900: '#141414',
     },
     primary: {
       500: '#3388FF',

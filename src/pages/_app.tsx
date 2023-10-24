@@ -15,6 +15,7 @@ import AppProvider from '../hooks'
 import { primary } from 'styles/fonts'
 import { GlobalStyles } from 'styles/global'
 import { theme } from 'styles/themes/default'
+import { kenzo } from 'styles/themes/kenzo'
 
 import Loading from './loading'
 
@@ -50,7 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title>Code&go</title>
         </Head>
 
-        <GlobalStyles theme={theme} />
+        <GlobalStyles theme={kenzo} />
         <ToastContainer theme="dark" />
 
         <LayoutGroup>

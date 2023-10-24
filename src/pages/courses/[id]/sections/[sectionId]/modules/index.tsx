@@ -3,7 +3,6 @@ import { ReactElement, useEffect, useState } from 'react'
 
 import Loading from '@/components/Loading'
 import axios from 'axios'
-import { toast } from 'react-toastify'
 import { useTheme } from 'styled-components'
 import useKeyPress from 'utils/useKeyPress'
 
@@ -104,6 +103,8 @@ export default function Course(): ReactElement {
 
   const [questions, setQuestions] = useState<any[]>([])
   const [exercises, setExercises] = useState<ExerciseProps[]>([])
+  const [clickedModule, setClickedModule] =
+    useState<FormattedModuleProps | null>(null)
 
   const [code, setCode] = useState(`// Escreva o código aqui`)
   const [language, setLanguage] = useState(languageOptions[0])
@@ -287,6 +288,7 @@ export default function Course(): ReactElement {
     module: FormattedModuleProps,
     moduleSequence: string,
   ) {
+    setClickedModule(module)
     setIsLessonStartLoading(true)
 
     if (course) {
@@ -353,7 +355,9 @@ export default function Course(): ReactElement {
                           module.id,
                         )
                       }
-                      isLoading={isLessonStartLoading}
+                      isLoading={
+                        isLessonStartLoading && clickedModule === module
+                      }
                     >
                       Iniciar módulo
                     </Button>

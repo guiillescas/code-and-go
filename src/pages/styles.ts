@@ -12,6 +12,15 @@ export const HomeContainer = styled.main`
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        margin-top: 1rem;
+        font-size: 1.25rem;
+      }
     }
   }
 

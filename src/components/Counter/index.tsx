@@ -7,7 +7,7 @@ import { CounterProps } from './types'
 export default function Counter(props: CounterProps): ReactElement {
   return (
     <Styles.CounterContainer>
-      <p>{props.couter}</p>
+      <p>{props.counter}</p>
 
       {props.icon}
     </Styles.CounterContainer>

@@ -1,12 +1,16 @@
 import styled from 'styled-components'
 
 export const CourseCardContainer = styled.div`
+  background: ${({ theme }) => theme.colors.neutral[800]};
+
+  height: fit-content;
+
   .image-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    min-height: 200px;
-    max-height: 230px;
+    min-height: 180px;
+    max-height: 200px;
 
     display: flex;
     align-items: center;
@@ -15,8 +19,8 @@ export const CourseCardContainer = styled.div`
     > img {
       width: 100%;
       height: 100%;
-      min-height: 200px;
-      max-height: 230px;
+      min-height: 180px;
+      max-height: 200px;
 
       object-fit: cover;
 
@@ -28,7 +32,9 @@ export const CourseCardContainer = styled.div`
     display: flex;
     flex-direction: column;
 
-    margin-top: 1rem;
+    height: fit-content;
+
+    padding: 1rem;
 
     > p {
       margin-top: 0.75rem;
