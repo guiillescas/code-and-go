@@ -59,7 +59,7 @@ export default function Community(): ReactElement {
     setIsSearchLoading(true)
 
     api(token)
-      .get(`/user/list?page=1&pagesize=10&name=${data.studentName}`)
+      .get(`/user/list?page=1&pageSize=10&name=${data.studentName}`)
       .then((response) => {
         const formattedPossibleFriends = response.data.data
           .map((possibleFriend: PossibleFriendsProps) => {
