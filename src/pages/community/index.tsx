@@ -35,7 +35,7 @@ const communitySchema = Yup.object().shape({
 })
 
 export default function Community(): ReactElement {
-  const { user, setUser, token } = useAuth()
+  const { user, setUser, token, updateUser } = useAuth()
 
   const [isSearchLoading, setIsSearchLoading] = useState(false)
   const [isFriendRequestLoading, setIsFriendRequestLoading] = useState(false)
@@ -50,7 +50,7 @@ export default function Community(): ReactElement {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<FormProps>({
     resolver: yupResolver(communitySchema),
   })
@@ -121,16 +121,24 @@ export default function Community(): ReactElement {
     setPossibleFriends([])
   }
 
+  console.log(possibleFriends)
+
   async function handleResponseFriendship(
     response: number,
     userId: string,
     requestId: string,
+    friendshipRequestId: string,
   ) {
+    console.log(friendshipRequestId)
     api(token)
       .post(`/user/${userId}/request/${requestId}/response`, {
         response,
       })
-      .then((res) => console.log(res))
+      .then(() => {
+        toast.success('Pedido de amizade aceito com sucesso!')
+
+        updateUser({ ...user, friendshipRequests: user.friendshipRequests.filter(friend => friend.id !== friendshipRequestId) })
+      })
       .catch(() => {
         toast.error('Erro inesperado. Tente novamente mais tarde.')
       })
@@ -231,7 +239,7 @@ export default function Community(): ReactElement {
             <h2>Pedidos de amizade</h2>
 
             {user.friendshipRequests?.length > 0 ? (
-              user.friendshipRequests.map((friendshipRequest) => (
+              user.friendshipRequests.map((friendshipRequest, index) => (
                 <FriendshipRequestCard
                   key={friendshipRequest.id}
                   requestId={friendshipRequest.id}
@@ -239,6 +247,7 @@ export default function Community(): ReactElement {
                   name={friendshipRequest.requesterEmail}
                   profilePicture={friendshipRequest.requesterPhoto}
                   handleResponseFriendship={handleResponseFriendship}
+                  friendshipRequestId={friendshipRequest.id}
                 />
               ))
             ) : (

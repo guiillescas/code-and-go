@@ -7,5 +7,7 @@ export interface FriendshipRequestCardProps {
     response: number,
     requesterId: string,
     requestId: string,
+    friendshipRequestId: string
   ) => Promise<void>
+  friendshipRequestId: string
 }

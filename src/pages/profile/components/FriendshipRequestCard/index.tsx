@@ -37,7 +37,7 @@ export default function FriendshipRequestCard(
           type="button"
           className="confirm"
           onClick={() =>
-            props.handleResponseFriendship(2, user.id, props.requestId)
+            props.handleResponseFriendship(2, user.id, props.requestId, props.friendshipRequestId)
           }
         >
           <FiCheck />
@@ -47,7 +47,7 @@ export default function FriendshipRequestCard(
           type="button"
           className="cancel"
           onClick={() =>
-            props.handleResponseFriendship(3, user.id, props.requestId)
+            props.handleResponseFriendship(3, user.id, props.requestId, props.friendshipRequestId)
           }
         >
           <FiX />
