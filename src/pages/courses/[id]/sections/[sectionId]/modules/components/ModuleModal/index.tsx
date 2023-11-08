@@ -58,6 +58,7 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
       })
     })
   }
+  console.log(user.lifeCount)
 
   function handleSendQuestion(
     question: QuestionProps,
@@ -80,6 +81,13 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
       return
     }
 
+    if (user.lifeCount === 0) {
+      props.onRequestClose()
+      toast.info('Você falhou e não tem mais vidas.')
+
+      return
+    }
+
     api(token)
       .put(`/lesson/${props.lessonId}/resolve/question`, {
         questionId: props.questions[questionIndex].id,
@@ -96,6 +104,9 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
               ...user,
               lifeCount: user.lifeCount - 1,
             })
+          } else {
+            props.onRequestClose()
+            toast.update('Você falhou e não tem mais vidas.')
           }
         }
 
@@ -345,9 +356,8 @@ export default function ModuleModal(props: ModuleModalProps): ReactElement {
           {steps.map((step) => {
             return (
               <div
-                className={`dot ${
-                  (step.isActive || step.isComplete) && 'active'
-                }`}
+                className={`dot ${(step.isActive || step.isComplete) && 'active'
+                  }`}
                 key={step.id}
               />
             )
